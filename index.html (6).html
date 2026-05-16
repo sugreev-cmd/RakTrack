@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decor Warehouse — Inventory Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0c0e14; --surf:#13161f; --surf2:#1c2030; --surf3:#242840;
+  --border:#2a2f4a; --gold:#e8a020; --gold2:#f5c060;
+  --blue:#4080ff; --green:#28c77a; --red:#e05050; --purple:#9060f0;
+  --text:#e8ecf8; --text2:#7880a0; --text3:#4a5070;
+  --radius:10px; --mono:'IBM Plex Mono',monospace; --body:'Outfit',sans-serif; --display:'Syne',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5}
+button{cursor:pointer;font-family:var(--body)}
+input,select,textarea{font-family:var(--body)}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--surf)}
+::-webkit-scrollbar-thumb{background:var(--surf3);border-radius:3px}
+
+.header{background:var(--surf);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;gap:16px}
+.logo{font-family:var(--display);font-size:17px;font-weight:800;color:var(--gold);letter-spacing:1px;white-space:nowrap}
+.logo em{color:var(--text2);font-style:normal;font-weight:400}
+.header-stats{display:flex;gap:20px}
+.hstat{text-align:center}
+.hstat-val{font-family:var(--mono);font-size:17px;font-weight:500;color:var(--gold);display:block}
+.hstat-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px}
+.header-actions{display:flex;gap:8px}
+
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius);border:none;font-size:13px;font-weight:600;transition:all .15s;white-space:nowrap;line-height:1}
+.btn-gold{background:var(--gold);color:#000}.btn-gold:hover{background:var(--gold2);transform:translateY(-1px)}
+.btn-green{background:var(--green);color:#000}.btn-green:hover{opacity:.85;transform:translateY(-1px)}
+.btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{opacity:.85}
+.btn-red{background:var(--red);color:#fff}.btn-red:hover{opacity:.85}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border)}.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.btn-sm{padding:5px 11px;font-size:12px}.btn-xs{padding:3px 9px;font-size:11px}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
+
+.tabs{background:var(--surf);border-bottom:1px solid var(--border);display:flex;padding:0 24px;gap:2px;overflow-x:auto}
+.tab{padding:14px 18px;font-size:13px;font-weight:500;color:var(--text2);border:none;background:none;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;cursor:pointer}
+.tab:hover{color:var(--text)}.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+
+.main{padding:24px;max-width:1300px;margin:0 auto}
+.panel{display:none;animation:fadeIn .2s ease}.panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.card{background:var(--surf);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:18px}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap}
+.card-title{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--gold)}
+.card-subtitle{font-size:12px;color:var(--text2);margin-top:2px}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group.half{grid-column:span 1}
+.form-group.two{grid-column:span 2}
+.form-group.full{grid-column:1/-1}
+.form-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text2)}
+.form-input{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px 13px;color:var(--text);font-size:13px;outline:none;transition:border-color .15s;width:100%}
+.form-input:focus{border-color:var(--gold)}
+.form-input::placeholder{color:var(--text3)}
+select.form-input option{background:var(--surf)}
+textarea.form-input{resize:vertical;min-height:70px}
+.form-section-label{grid-column:1/-1;font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:2px;border-bottom:1px solid var(--border);padding-bottom:8px;margin-top:6px}
+.form-actions{margin-top:18px;display:flex;gap:10px}
+
+.alert{padding:10px 14px;border-radius:var(--radius);font-size:13px;margin-bottom:14px;display:none}
+.alert.show{display:block}
+.alert-success{background:rgba(40,199,122,.12);border:1px solid rgba(40,199,122,.3);color:var(--green)}
+.alert-error{background:rgba(224,80,80,.12);border:1px solid rgba(224,80,80,.3);color:var(--red)}
+.alert-info{background:rgba(64,128,255,.12);border:1px solid rgba(64,128,255,.3);color:var(--blue)}
+
+.table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse}
+thead th{background:var(--surf2);padding:10px 14px;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text2);text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle;font-size:13px}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:rgba(255,255,255,.02)}
+.item-name{font-weight:600;color:var(--text)}
+.item-meta{font-size:11px;color:var(--text2);margin-top:2px;display:flex;gap:6px;flex-wrap:wrap}
+.cell-mono{font-family:var(--mono);font-size:11px;color:var(--text2)}
+.cell-actions{display:flex;gap:5px;flex-wrap:wrap}
+
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-family:var(--mono);font-size:10px;font-weight:500;white-space:nowrap}
+.badge-rack{background:rgba(232,160,32,.12);color:var(--gold);border:1px solid rgba(232,160,32,.25)}
+.badge-cat{background:rgba(64,128,255,.12);color:var(--blue);border:1px solid rgba(64,128,255,.25)}
+.badge-qty{background:rgba(40,199,122,.12);color:var(--green);border:1px solid rgba(40,199,122,.25)}
+.badge-type{background:rgba(144,96,240,.12);color:var(--purple);border:1px solid rgba(144,96,240,.25)}
+.badge-color{background:rgba(255,255,255,.06);color:var(--text2);border:1px solid var(--border)}
+
+.color-dot{width:12px;height:12px;border-radius:50%;border:1px solid rgba(255,255,255,.2);display:inline-block;flex-shrink:0}
+
+.search-row{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.search-wrap{position:relative;flex:1;min-width:200px}
+.search-wrap .form-input{padding-left:38px}
+.search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none}
+.filter-select{width:160px;flex-shrink:0}
+
+.img-thumb{width:56px;height:56px;object-fit:cover;border-radius:8px;border:1px solid var(--border);cursor:pointer;transition:transform .15s,border-color .15s;display:block}
+.img-thumb:hover{transform:scale(1.1);border-color:var(--gold)}
+.img-placeholder{width:56px;height:56px;border-radius:8px;border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:20px;cursor:pointer;transition:all .15s}
+.img-placeholder:hover{border-color:var(--gold);color:var(--gold)}
+
+.img-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:20px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:var(--bg)}
+.img-zone:hover,.img-zone.drag-over{border-color:var(--gold);background:rgba(232,160,32,.04)}
+.img-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.img-preview-wrap{display:flex;align-items:center;gap:14px;margin-top:12px;background:var(--surf2);border-radius:var(--radius);padding:10px}
+.img-preview-wrap img{width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);flex-shrink:0}
+.img-preview-info{flex:1;font-size:12px;color:var(--text2)}
+.img-preview-name{font-weight:600;color:var(--text);margin-bottom:3px;font-size:13px}
+
+.rack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:14px}
+.rack-card{background:var(--surf);border:1px solid var(--border);border-radius:14px;padding:18px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.rack-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.rack-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.4)}
+.rack-name{font-family:var(--display);font-size:15px;font-weight:700;color:var(--gold);margin-bottom:8px}
+.rack-count{font-family:var(--mono);font-size:34px;font-weight:400;color:var(--text);margin-bottom:2px}
+.rack-label{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px}
+.rack-preview{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.rack-tag-item{font-size:10px;background:var(--surf2);border:1px solid var(--border);padding:2px 7px;border-radius:4px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:155px}
+
+.rack-tags{display:flex;flex-wrap:wrap;gap:10px}
+.rtag{display:inline-flex;align-items:center;gap:8px;background:var(--surf2);border:1px solid var(--border);border-radius:var(--radius);padding:7px 12px;font-family:var(--mono);font-size:12px;color:var(--gold)}
+.rtag-del{color:var(--text3);background:none;border:none;font-size:16px;line-height:1;cursor:pointer;padding:0}
+.rtag-del:hover{color:var(--red)}
+
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;z-index:200;backdrop-filter:blur(4px)}
+.overlay.open{display:flex}
+.modal{background:var(--surf);border:1px solid var(--border);border-radius:16px;padding:26px;width:94%;max-width:680px;max-height:90vh;overflow-y:auto;animation:mIn .2s ease}
+@keyframes mIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.modal-title{font-family:var(--display);font-size:16px;font-weight:700;color:var(--gold);margin-bottom:18px}
+.modal-actions{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
+
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.93);display:none;align-items:center;justify-content:center;z-index:500;cursor:zoom-out}
+.lightbox.open{display:flex}
+.lightbox img{max-width:90vw;max-height:88vh;object-fit:contain;border-radius:12px;box-shadow:0 24px 80px rgba(0,0,0,.8);animation:lbIn .2s ease}
+.lb-close{position:absolute;top:20px;right:24px;background:rgba(255,255,255,.1);border:none;color:#fff;width:40px;height:40px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.lb-close:hover{background:rgba(255,255,255,.2)}
+@keyframes lbIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+
+.loading-overlay{position:fixed;inset:0;background:rgba(12,14,20,.88);display:none;align-items:center;justify-content:center;z-index:300;flex-direction:column;gap:14px;backdrop-filter:blur(4px)}
+.loading-overlay.show{display:flex}
+.spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.conn-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:5px 11px;border-radius:20px;font-family:var(--mono)}
+.conn-badge.offline{background:rgba(224,80,80,.12);color:var(--red);border:1px solid rgba(224,80,80,.3)}
+.conn-badge.online{background:rgba(40,199,122,.12);color:var(--green);border:1px solid rgba(40,199,122,.3)}
+.conn-dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+
+.steps{display:flex;flex-direction:column}
+.step{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--border)}
+.step:last-child{border-bottom:none}
+.step-num{width:30px;height:30px;border-radius:50%;background:var(--gold);color:#000;font-family:var(--display);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-title{font-weight:600;color:var(--text);margin-bottom:4px}
+.step-desc{font-size:13px;color:var(--text2);line-height:1.6}
+code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px solid var(--border);padding:1px 6px;border-radius:4px;color:var(--gold2)}
+
+.back-btn{display:inline-flex;align-items:center;gap:7px;background:none;border:none;color:var(--text2);font-size:13px;cursor:pointer;margin-bottom:18px;transition:color .15s}
+.back-btn:hover{color:var(--gold)}
+
+.empty{text-align:center;padding:52px 20px}
+.empty-icon{font-size:42px;margin-bottom:12px;opacity:.4}
+.empty-text{font-size:13px;color:var(--text2)}
+
+@media(max-width:768px){
+  .header{padding:0 14px}.header-stats{gap:14px}.hstat-val{font-size:14px}
+  .main{padding:14px}.form-grid{grid-template-columns:1fr 1fr}
+  .form-group.half,.form-group.two{grid-column:span 1}.form-group.full{grid-column:1/-1}
+  .header-actions{display:none}.filter-select{width:120px}
+}
+@media(max-width:480px){.form-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loading">
+  <div class="spinner"></div>
+  <div style="font-size:13px;color:var(--text2);font-family:var(--mono)">Syncing with Google Sheets...</div>
+</div>
+
+<header class="header">
+  <div class="logo">DECOR <em>/</em> WAREHOUSE</div>
+  <div class="header-stats">
+    <div class="hstat"><span class="hstat-val" id="s-items">0</span><span class="hstat-lbl">Items</span></div>
+    <div class="hstat"><span class="hstat-val" id="s-racks">0</span><span class="hstat-lbl">Racks</span></div>
+    <div class="hstat"><span class="hstat-val" id="s-cats">0</span><span class="hstat-lbl">Categories</span></div>
+    <div class="hstat"><span class="hstat-val" id="s-types">0</span><span class="hstat-lbl">Types</span></div>
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-ghost btn-sm" onclick="exportCSV()">⬇ Export CSV</button>
+    <button class="btn btn-ghost btn-sm" onclick="document.getElementById('file-import').click()">⬆ Import CSV</button>
+    <input type="file" id="file-import" accept=".csv" style="display:none" onchange="importCSV(event)">
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" onclick="switchTab('add')">＋ Add Item</button>
+  <button class="tab" onclick="switchTab('search')">⌕ Search</button>
+  <button class="tab" onclick="switchTab('racks')">▦ Rack View</button>
+  <button class="tab" onclick="switchTab('manage')">✦ Manage</button>
+  <button class="tab" onclick="switchTab('setup')">⚙ Google Sheets</button>
+</nav>
+
+<main class="main">
+
+  <!-- ADD ITEM -->
+  <div class="panel active" id="panel-add">
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">Add New Item</div><div class="card-subtitle">Fill in product details and assign a rack location</div></div>
+        <div id="conn-status" class="conn-badge offline"><span class="conn-dot"></span>Local Mode</div>
+      </div>
+      <div id="alert-add" class="alert"></div>
+      <div class="form-grid">
+        <div class="form-section-label">📦 Basic Information</div>
+        <div class="form-group half"><label class="form-label">Item Name *</label><input class="form-input" id="f-name" type="text" placeholder="e.g. Ceramic Vase Blue Large"></div>
+        <div class="form-group half"><label class="form-label">SKU / Item Code</label><input class="form-input" id="f-sku" type="text" placeholder="e.g. SKU-001"></div>
+        <div class="form-group half"><label class="form-label">Barcode / EAN</label><input class="form-input" id="f-barcode" type="text" placeholder="e.g. 8901234567890"></div>
+
+        <div class="form-section-label">🏷 Classification</div>
+        <div class="form-group half"><label class="form-label">Product Type</label><input class="form-input" id="f-type" type="text" list="type-list" placeholder="e.g. Home Decor, Furniture"><datalist id="type-list"></datalist></div>
+        <div class="form-group half"><label class="form-label">Category</label><input class="form-input" id="f-cat" type="text" list="cat-list" placeholder="e.g. Vase, Lamp, Cushion"><datalist id="cat-list"></datalist></div>
+        <div class="form-group half"><label class="form-label">Sub Class</label><input class="form-input" id="f-subclass" type="text" list="subclass-list" placeholder="e.g. Ceramic, Metal, Fabric"><datalist id="subclass-list"></datalist></div>
+        <div class="form-group half"><label class="form-label">Brand / Supplier</label><input class="form-input" id="f-brand" type="text" list="brand-list" placeholder="e.g. Artcraft, HomeStyle"><datalist id="brand-list"></datalist></div>
+        <div class="form-group half"><label class="form-label">Material</label><input class="form-input" id="f-material" type="text" placeholder="e.g. Ceramic, Wood, Glass"></div>
+
+        <div class="form-section-label">🎨 Appearance</div>
+        <div class="form-group half">
+          <label class="form-label">Color</label>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input type="color" id="f-color-picker" value="#e8a020" style="width:44px;height:40px;border-radius:8px;border:1px solid var(--border);background:transparent;cursor:pointer;padding:2px" onchange="document.getElementById('f-color').value=this.value">
+            <input class="form-input" id="f-color" type="text" placeholder="e.g. Blue, Red, #FF5733" oninput="syncColorPicker(this.value)">
+          </div>
+        </div>
+        <div class="form-group half"><label class="form-label">Size / Dimensions</label><input class="form-input" id="f-size" type="text" placeholder="e.g. 30x20x10 cm, Large"></div>
+        <div class="form-group half"><label class="form-label">Weight</label><input class="form-input" id="f-weight" type="text" placeholder="e.g. 500g, 1.2 kg"></div>
+
+        <div class="form-section-label">📊 Stock & Pricing</div>
+        <div class="form-group half"><label class="form-label">Rack Location *</label><select class="form-input" id="f-rack"></select></div>
+        <div class="form-group half"><label class="form-label">Quantity</label><input class="form-input" id="f-qty" type="number" value="1" min="0"></div>
+        <div class="form-group half"><label class="form-label">Purchase Price (₹)</label><input class="form-input" id="f-cost" type="number" value="0" min="0"></div>
+        <div class="form-group half"><label class="form-label">Selling Price (₹)</label><input class="form-input" id="f-price" type="number" value="0" min="0"></div>
+        <div class="form-group full"><label class="form-label">Notes</label><textarea class="form-input" id="f-notes" placeholder="Any extra information (fragile, handle with care, etc.)"></textarea></div>
+
+        <div class="form-section-label">🖼 Product Image</div>
+        <div class="form-group full">
+          <div class="img-zone" id="add-zone"
+               ondragover="event.preventDefault();this.classList.add('drag-over')"
+               ondragleave="this.classList.remove('drag-over')"
+               ondrop="handleDrop(event,'add-zone','add-preview','add-img')">
+            <input type="file" id="add-file" accept="image/*" onchange="handleFile(this,'add-zone','add-preview','add-img')">
+            <div style="font-size:32px;margin-bottom:8px;color:var(--text3)">🖼</div>
+            <div style="font-size:14px;font-weight:600;color:var(--text2)">Click to upload or drag & drop image</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:4px">JPG, PNG, WEBP — max 2 MB</div>
+          </div>
+          <div id="add-preview" style="display:none;margin-top:10px"></div>
+          <input type="hidden" id="add-img">
+          <div style="display:flex;align-items:center;gap:10px;margin-top:10px">
+            <span style="font-size:11px;color:var(--text3);white-space:nowrap">Or paste image URL:</span>
+            <input class="form-input" id="f-img-url" type="url" placeholder="https://example.com/product.jpg" style="font-size:12px;padding:7px 11px" oninput="handleUrl(this.value,'add-preview','add-img')">
+          </div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-gold" onclick="addItem()">Add Item</button>
+        <button class="btn btn-ghost" onclick="clearForm()">Clear All</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="panel" id="panel-search">
+    <div class="search-row">
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input class="form-input" id="search-q" type="text" placeholder="Search name, SKU, barcode, color, brand..." oninput="doSearch()">
+      </div>
+      <select class="form-input filter-select" id="fil-rack" onchange="doSearch()"><option value="">All Racks</option></select>
+      <select class="form-input filter-select" id="fil-type" onchange="doSearch()"><option value="">All Types</option></select>
+      <select class="form-input filter-select" id="fil-cat" onchange="doSearch()"><option value="">All Categories</option></select>
+      <select class="form-input filter-select" id="fil-subclass" onchange="doSearch()"><option value="">All Sub Classes</option></select>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">Search Results</div><span id="search-count" style="font-size:12px;color:var(--text2)"></span></div>
+        <button class="btn btn-green btn-sm" onclick="exportSearchCSV()">⬇ Export Results</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th style="width:70px">Image</th>
+            <th>Item Name</th><th>SKU</th><th>Type</th><th>Category</th><th>Sub Class</th><th>Color</th><th>Rack</th><th>Qty</th><th>Price (₹)</th><th>Actions</th>
+          </tr></thead>
+          <tbody id="search-body">
+            <tr><td colspan="11"><div class="empty"><div class="empty-icon">⌕</div><div class="empty-text">Start typing to search</div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- RACK VIEW -->
+  <div class="panel" id="panel-racks">
+    <div id="rack-list-view">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">All Rack Locations</div>
+          <span style="font-size:12px;color:var(--text2)">Click a rack to view its items</span>
+        </div>
+        <div class="rack-grid" id="rack-grid"></div>
+      </div>
+    </div>
+    <div id="rack-detail-view" style="display:none">
+      <button class="back-btn" onclick="closeRackDetail()">← Back to All Racks</button>
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title" id="rd-title"></div><div class="card-subtitle" id="rd-sub"></div></div>
+          <button class="btn btn-green btn-sm" onclick="exportRackCSV()">⬇ Export This Rack</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th style="width:70px">Image</th>
+              <th>Item Name</th><th>SKU</th><th>Type</th><th>Category</th><th>Sub Class</th><th>Color</th><th>Qty</th><th>Price (₹)</th><th>Actions</th>
+            </tr></thead>
+            <tbody id="rack-detail-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MANAGE -->
+  <div class="panel" id="panel-manage">
+    <div class="card">
+      <div class="card-title">Add New Rack</div>
+      <div id="alert-rack" class="alert"></div>
+      <div style="display:flex;gap:10px;align-items:flex-end;margin-top:14px">
+        <div class="form-group" style="flex:1;margin:0">
+          <label class="form-label">Rack Name</label>
+          <input class="form-input" id="new-rack-name" type="text" placeholder="e.g. Rack-A1, Section-B, Zone-2" onkeydown="if(event.key==='Enter')addRack()">
+        </div>
+        <button class="btn btn-gold" onclick="addRack()">Add Rack</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Existing Racks</div>
+        <span style="font-size:12px;color:var(--text2)">× to delete (only if empty)</span>
+      </div>
+      <div class="rack-tags" id="rack-tags"></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">All Items</div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-green btn-sm" onclick="exportCSV()">⬇ Export CSV</button>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('file-import').click()">⬆ Import CSV</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th style="width:70px">Image</th>
+            <th>Item Name</th><th>SKU</th><th>Type</th><th>Category</th><th>Sub Class</th><th>Brand</th><th>Color</th><th>Rack</th><th>Qty</th><th>Price (₹)</th><th>Actions</th>
+          </tr></thead>
+          <tbody id="manage-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETUP -->
+  <div class="panel" id="panel-setup">
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">Google Sheets Connection</div><div class="card-subtitle">Connect for cloud storage — data saves automatically</div></div>
+        <div id="conn-status2" class="conn-badge offline"><span class="conn-dot"></span>Not Connected</div>
+      </div>
+      <div id="alert-setup" class="alert"></div>
+      <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px">
+        <div class="form-group" style="flex:1;min-width:280px;margin:0">
+          <label class="form-label">Google Apps Script Web App URL</label>
+          <input class="form-input" id="gs-url" type="url" placeholder="https://script.google.com/macros/s/YOUR_ID/exec">
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="testConn()">Test</button>
+        <button class="btn btn-gold btn-sm" onclick="saveConn()">Save & Connect</button>
+        <button class="btn btn-ghost btn-sm" onclick="clearConn()">Disconnect</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="margin-bottom:16px">Setup Guide</div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div><div class="step-title">Create Google Sheet</div><div class="step-desc">Go to <strong>sheets.google.com</strong>, create a new sheet named <code>Decor Warehouse</code>. Create two tabs: <code>Items</code> and <code>Racks</code>.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div><div class="step-title">Open Apps Script</div><div class="step-desc">In your sheet: <strong>Extensions → Apps Script</strong>. Paste the <code>Code.gs</code> file contents and save.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div><div class="step-title">Run Setup Function</div><div class="step-desc">In Apps Script, select <code>setupSheets</code> from the function dropdown and click <strong>Run</strong>. This creates all headers automatically.</div></div></div>
+        <div class="step"><div class="step-num">4</div><div><div class="step-title">Deploy as Web App</div><div class="step-desc"><strong>Deploy → New Deployment → Web App</strong>. Execute as: <em>Me</em>. Access: <em>Anyone</em>. Copy the URL.</div></div></div>
+        <div class="step"><div class="step-num">5</div><div><div class="step-title">Connect Here</div><div class="step-desc">Paste the URL above, click <strong>Test</strong> then <strong>Save & Connect</strong>. Done!</div></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="margin-bottom:12px">CSV Backup (No Google Sheets needed)</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-green" onclick="exportCSV()">⬇ Export All Items as CSV</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('file-import').click()">⬆ Import Items from CSV</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- EDIT MODAL -->
+<div class="overlay" id="edit-overlay">
+  <div class="modal">
+    <div class="modal-title">Edit Item</div>
+    <input type="hidden" id="edit-id">
+    <div class="form-grid">
+      <div class="form-section-label">📦 Basic Information</div>
+      <div class="form-group half"><label class="form-label">Item Name *</label><input class="form-input" id="edit-name" type="text"></div>
+      <div class="form-group half"><label class="form-label">SKU / Item Code</label><input class="form-input" id="edit-sku" type="text"></div>
+      <div class="form-group half"><label class="form-label">Barcode / EAN</label><input class="form-input" id="edit-barcode" type="text"></div>
+
+      <div class="form-section-label">🏷 Classification</div>
+      <div class="form-group half"><label class="form-label">Product Type</label><input class="form-input" id="edit-type" type="text" list="type-list"></div>
+      <div class="form-group half"><label class="form-label">Category</label><input class="form-input" id="edit-cat" type="text" list="cat-list"></div>
+      <div class="form-group half"><label class="form-label">Sub Class</label><input class="form-input" id="edit-subclass" type="text" list="subclass-list"></div>
+      <div class="form-group half"><label class="form-label">Brand / Supplier</label><input class="form-input" id="edit-brand" type="text" list="brand-list"></div>
+      <div class="form-group half"><label class="form-label">Material</label><input class="form-input" id="edit-material" type="text"></div>
+
+      <div class="form-section-label">🎨 Appearance</div>
+      <div class="form-group half">
+        <label class="form-label">Color</label>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="color" id="edit-color-picker" style="width:44px;height:40px;border-radius:8px;border:1px solid var(--border);background:transparent;cursor:pointer;padding:2px" onchange="document.getElementById('edit-color').value=this.value">
+          <input class="form-input" id="edit-color" type="text" placeholder="e.g. Blue" oninput="syncColorPicker(this.value,'edit-color-picker')">
+        </div>
+      </div>
+      <div class="form-group half"><label class="form-label">Size / Dimensions</label><input class="form-input" id="edit-size" type="text"></div>
+      <div class="form-group half"><label class="form-label">Weight</label><input class="form-input" id="edit-weight" type="text"></div>
+
+      <div class="form-section-label">📊 Stock & Pricing</div>
+      <div class="form-group half"><label class="form-label">Rack Location</label><select class="form-input" id="edit-rack"></select></div>
+      <div class="form-group half"><label class="form-label">Quantity</label><input class="form-input" id="edit-qty" type="number" min="0"></div>
+      <div class="form-group half"><label class="form-label">Purchase Price (₹)</label><input class="form-input" id="edit-cost" type="number" min="0"></div>
+      <div class="form-group half"><label class="form-label">Selling Price (₹)</label><input class="form-input" id="edit-price" type="number" min="0"></div>
+      <div class="form-group full"><label class="form-label">Notes</label><textarea class="form-input" id="edit-notes"></textarea></div>
+
+      <div class="form-section-label">🖼 Product Image</div>
+      <div class="form-group full">
+        <div class="img-zone" id="edit-zone"
+             ondragover="event.preventDefault();this.classList.add('drag-over')"
+             ondragleave="this.classList.remove('drag-over')"
+             ondrop="handleDrop(event,'edit-zone','edit-preview','edit-img')">
+          <input type="file" id="edit-file" accept="image/*" onchange="handleFile(this,'edit-zone','edit-preview','edit-img')">
+          <div style="font-size:22px;margin-bottom:6px;color:var(--text3)">🖼</div>
+          <div style="font-size:13px;color:var(--text2)">Click or drag to replace image</div>
+        </div>
+        <div id="edit-preview" style="display:none;margin-top:10px"></div>
+        <input type="hidden" id="edit-img">
+        <div style="display:flex;align-items:center;gap:10px;margin-top:8px">
+          <span style="font-size:11px;color:var(--text3);white-space:nowrap">Or paste URL:</span>
+          <input class="form-input" id="edit-img-url" type="url" placeholder="https://..." style="font-size:12px;padding:7px 11px" oninput="handleUrl(this.value,'edit-preview','edit-img')">
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('edit-overlay')">Cancel</button>
+      <button class="btn btn-gold btn-sm" onclick="confirmEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- MOVE MODAL -->
+<div class="overlay" id="move-overlay">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-title">Move Item to Another Rack</div>
+    <div class="form-group" style="margin-bottom:14px">
+      <label class="form-label">Item</label>
+      <input class="form-input" id="move-display" readonly>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Select New Rack</label>
+      <select class="form-input" id="move-rack"></select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('move-overlay')">Cancel</button>
+      <button class="btn btn-gold btn-sm" onclick="confirmMove()">Move Item</button>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <img id="lb-img" src="" alt="Product Image">
+</div>
+
+<script>
+/* ── STATE ── */
+// ✅ FIX 1: Items ko numeric IDs se define karo (string IDs template literals mein quote conflict karti thi)
+let items = [
+  {id:'item_1',name:'Ceramic Vase Blue',sku:'SKU-001',barcode:'8901000000001',type:'Home Decor',cat:'Vase',subclass:'Ceramic',brand:'ArtCraft',material:'Ceramic',color:'Blue',size:'30×15 cm',weight:'500g',rack:'Rack-A1',qty:5,cost:800,price:1200,notes:'Handle with care',image:'https://images.unsplash.com/photo-1578500494198-246f612d3b3d?w=200&q=80',added:'2025-01-10'},
+  {id:'item_2',name:'Wooden Photo Frame 8x10',sku:'SKU-002',barcode:'8901000000002',type:'Home Decor',cat:'Frame',subclass:'Wood',brand:'WoodWorks',material:'Teak Wood',color:'Brown',size:'25×20 cm',weight:'300g',rack:'Rack-A2',qty:12,cost:300,price:450,notes:'',image:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&q=80',added:'2025-01-11'},
+  {id:'item_3',name:'Fairy Light Set Warm',sku:'SKU-003',barcode:'',type:'Lighting',cat:'Fairy Lights',subclass:'LED',brand:'GlowCo',material:'Copper Wire',color:'Warm White',size:'10m',weight:'200g',rack:'Rack-B1',qty:8,cost:200,price:320,notes:'Keep in original box',image:'https://images.unsplash.com/photo-1545127398-14699f92334b?w=200&q=80',added:'2025-01-12'},
+  {id:'item_4',name:'Cushion Cover Pink 16"',sku:'SKU-004',barcode:'',type:'Soft Furnishing',cat:'Cushion',subclass:'Fabric',brand:'HomeStyle',material:'Cotton',color:'Pink',size:'16×16 inch',weight:'150g',rack:'Rack-A1',qty:20,cost:120,price:180,notes:'',image:'https://images.unsplash.com/photo-1588556982819-1e9ba2b72a16?w=200&q=80',added:'2025-01-13'},
+  {id:'item_5',name:'Table Lamp Beige',sku:'SKU-005',barcode:'8901000000005',type:'Lighting',cat:'Lamp',subclass:'Table Lamp',brand:'LightHouse',material:'Metal + Fabric',color:'Beige',size:'45 cm height',weight:'1.2 kg',rack:'Rack-B2',qty:3,cost:1500,price:2200,notes:'Fragile — pack separately',image:'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=200&q=80',added:'2025-01-14'},
+  {id:'item_6',name:'Wall Clock Minimalist',sku:'SKU-006',barcode:'',type:'Home Decor',cat:'Clock',subclass:'Wall Decor',brand:'TimeCraft',material:'MDF + Glass',color:'Black',size:'30 cm diameter',weight:'400g',rack:'Section-C',qty:6,cost:600,price:890,notes:'',image:'https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=200&q=80',added:'2025-01-15'},
+];
+
+let racks = ['Rack-A1','Rack-A2','Rack-B1','Rack-B2','Section-C','Zone-D'];
+
+// ✅ FIX 2: nextId dynamically calculate karo — hardcoded value safe nahi hoti
+let nextId = items.length + 1;
+
+let moveTarget = null;
+let currentRack = null;
+let filteredItems = [...items];
+let gsUrl = localStorage.getItem('ws_gs_url') || '';
+
+/* ── SAFE ID GENERATOR ── */
+// ✅ FIX 3: IDs generate karne ka safe tarika — koi conflict nahi hoga
+function genId() {
+  return 'item_' + (nextId++);
+}
+
+/* ── INIT ── */
+function init() {
+  if(gsUrl) fetchFromGS();
+  refreshAll();
+}
+
+function refreshAll() {
+  updateStats();
+  refreshDropdowns();
+  refreshDataLists();
+  refreshFilters();
+}
+
+/* ── TABS ── */
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  const tabs=['add','search','racks','manage','setup'];
+  document.querySelectorAll('.tab')[tabs.indexOf(tab)].classList.add('active');
+  document.getElementById('panel-'+tab).classList.add('active');
+  if(tab==='racks')  renderRacks();
+  if(tab==='manage') renderManage();
+  if(tab==='search') doSearch();
+  refreshDropdowns();
+  updateConnStatus();
+}
+
+/* ── STATS ── */
+function updateStats() {
+  document.getElementById('s-items').textContent = items.length;
+  document.getElementById('s-racks').textContent = racks.length;
+  document.getElementById('s-cats').textContent  = new Set(items.map(i=>i.cat).filter(Boolean)).size;
+  document.getElementById('s-types').textContent = new Set(items.map(i=>i.type).filter(Boolean)).size;
+}
+
+/* ── DROPDOWNS ── */
+function refreshDropdowns() {
+  const opts = racks.map(r=>`<option value="${r}">${r}</option>`).join('');
+  ['f-rack','move-rack','edit-rack'].forEach(id => {
+    const el = document.getElementById(id); if(!el) return;
+    const cur = el.value; el.innerHTML = opts; if(cur) el.value = cur;
+  });
+}
+
+function refreshDataLists() {
+  const types    = [...new Set(items.map(i=>i.type).filter(Boolean))].sort();
+  const cats     = [...new Set(items.map(i=>i.cat).filter(Boolean))].sort();
+  const subclass = [...new Set(items.map(i=>i.subclass).filter(Boolean))].sort();
+  const brands   = [...new Set(items.map(i=>i.brand).filter(Boolean))].sort();
+  setDataList('type-list', types);
+  setDataList('cat-list', cats);
+  setDataList('subclass-list', subclass);
+  setDataList('brand-list', brands);
+}
+
+function setDataList(id, values) {
+  const el = document.getElementById(id); if(!el) return;
+  el.innerHTML = values.map(v=>`<option value="${esc(v)}">`).join('');
+}
+
+function refreshFilters() {
+  const makeopts = (arr, all) => `<option value="">${all}</option>` + arr.map(v=>`<option value="${v}">${v}</option>`).join('');
+  document.getElementById('fil-rack').innerHTML = makeopts(racks,'All Racks');
+  document.getElementById('fil-type').innerHTML = makeopts([...new Set(items.map(i=>i.type).filter(Boolean))].sort(),'All Types');
+  document.getElementById('fil-cat').innerHTML  = makeopts([...new Set(items.map(i=>i.cat).filter(Boolean))].sort(),'All Categories');
+  document.getElementById('fil-subclass').innerHTML = makeopts([...new Set(items.map(i=>i.subclass).filter(Boolean))].sort(),'All Sub Classes');
+}
+
+/* ── COLOR PICKER ── */
+function syncColorPicker(val, pickerId='f-color-picker') {
+  const hex = val.startsWith('#') && val.length===7 ? val : null;
+  if(hex) { const el=document.getElementById(pickerId); if(el) el.value=hex; }
+}
+
+/* ── ADD ITEM ── */
+function addItem() {
+  const name = document.getElementById('f-name').value.trim();
+  const rack = document.getElementById('f-rack').value;
+  const al   = document.getElementById('alert-add');
+  if(!name) { showAlert(al,'Item name is required.','error'); return; }
+  if(!rack) { showAlert(al,'Please select a rack location.','error'); return; }
+  const item = {
+    id:       genId(),   // ✅ Safe ID use karo
+    name,
+    sku:      v('f-sku').trim(),
+    barcode:  v('f-barcode').trim(),
+    type:     v('f-type').trim(),
+    cat:      v('f-cat').trim(),
+    subclass: v('f-subclass').trim(),
+    brand:    v('f-brand').trim(),
+    material: v('f-material').trim(),
+    color:    v('f-color').trim(),
+    size:     v('f-size').trim(),
+    weight:   v('f-weight').trim(),
+    rack,
+    qty:      parseInt(v('f-qty'))||0,
+    cost:     parseFloat(v('f-cost'))||0,
+    price:    parseFloat(v('f-price'))||0,
+    notes:    v('f-notes').trim(),
+    image:    document.getElementById('add-img').value || '',
+    added:    new Date().toISOString().slice(0,10)
+  };
+  items.push(item);
+  showAlert(al,`✓ "${name}" added to ${rack} successfully.`,'success');
+  clearForm();
+  refreshAll();
+  if(gsUrl) pushToGS('addItem', item);
+}
+
+function clearForm() {
+  ['f-name','f-sku','f-barcode','f-type','f-cat','f-subclass','f-brand','f-material',
+   'f-color','f-size','f-weight','f-notes','f-img-url'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('f-qty').value   = 1;
+  document.getElementById('f-cost').value  = 0;
+  document.getElementById('f-price').value = 0;
+  document.getElementById('add-img').value = '';
+  const prev = document.getElementById('add-preview');
+  prev.style.display='none'; prev.innerHTML='';
+}
+
+/* ── SEARCH ── */
+function doSearch() {
+  const q  = v('search-q').toLowerCase().trim();
+  const fR = v('fil-rack'), fT = v('fil-type'), fC = v('fil-cat'), fS = v('fil-subclass');
+  filteredItems = items.filter(i => {
+    const mQ = !q || [i.name,i.sku,i.barcode,i.type,i.cat,i.subclass,i.brand,i.color,i.material,i.notes]
+      .some(f=>(f||'').toLowerCase().includes(q));
+    return mQ && (!fR||i.rack===fR) && (!fT||i.type===fT) && (!fC||i.cat===fC) && (!fS||i.subclass===fS);
+  });
+  const cnt = document.getElementById('search-count');
+  cnt.textContent = filteredItems.length ? `— ${filteredItems.length} result${filteredItems.length>1?'s':''}` : '— No results';
+  renderTable(filteredItems,'search-body',true);
+}
+
+/* ── RENDER TABLE ──
+   ✅ FIX 4 (MAIN FIX): onclick handlers mein inline string IDs ki jagah
+   data-attribute + event delegation use karo — quote conflict ZERO hoga
+*/
+function imgCell(item) {
+  if(item.image) {
+    // ✅ data-src attribute use karo — image URL ko onclick mein escape karne ki zarurat nahi
+    return `<img class="img-thumb" src="${item.image}" alt="${esc(item.name)}"
+              data-src="${item.image.replace(/"/g,'&quot;')}"
+              data-action="lightbox"
+              onerror="this.style.display='none'">`; 
+  }
+  return `<div class="img-placeholder" data-id="${item.id}" data-action="edit" title="Click Edit to add image">+</div>`;
+}
+
+function colorCell(item) {
+  if(!item.color) return '—';
+  const hex = item.color.startsWith('#') ? item.color : null;
+  return `<div style="display:flex;align-items:center;gap:5px">
+    ${hex?`<span class="color-dot" style="background:${hex}"></span>`:''}
+    <span class="badge badge-color">${esc(item.color)}</span>
+  </div>`;
+}
+
+function renderTable(data, tbodyId, showRack=false) {
+  const tbody = document.getElementById(tbodyId);
+  const cols = showRack ? 11 : 10;
+  if(!data.length) {
+    tbody.innerHTML=`<tr><td colspan="${cols}"><div class="empty"><div class="empty-icon">📦</div><div class="empty-text">No items found</div></div></td></tr>`;
+    return;
+  }
+  // ✅ data-id attribute use karo har action button mein — koi inline string nahi
+  tbody.innerHTML = data.map(item=>`
+    <tr>
+      <td>${imgCell(item)}</td>
+      <td>
+        <div class="item-name">${esc(item.name)}</div>
+        <div class="item-meta">
+          ${item.barcode?`<span class="cell-mono" style="font-size:10px">${esc(item.barcode)}</span>`:''}
+          ${item.brand?`<span style="color:var(--text3);font-size:11px">${esc(item.brand)}</span>`:''}
+        </div>
+      </td>
+      <td><span class="cell-mono">${esc(item.sku)||'—'}</span></td>
+      <td>${item.type?`<span class="badge badge-type">${esc(item.type)}</span>`:'—'}</td>
+      <td>${item.cat?`<span class="badge badge-cat">${esc(item.cat)}</span>`:'—'}</td>
+      <td><span class="cell-mono" style="font-size:11px">${esc(item.subclass)||'—'}</span></td>
+      <td>${colorCell(item)}</td>
+      ${showRack?`<td><span class="badge badge-rack">${esc(item.rack)}</span></td>`:''}
+      <td><span class="badge badge-qty">${item.qty}</span></td>
+      <td><span class="cell-mono">${item.price?'₹'+item.price.toLocaleString('en-IN'):'—'}</span></td>
+      <td>
+        <div class="cell-actions">
+          <button class="btn btn-blue btn-xs" data-id="${item.id}" data-action="move">Move</button>
+          <button class="btn btn-ghost btn-xs" data-id="${item.id}" data-action="edit">Edit</button>
+          ${tbodyId==='manage-body'?`<button class="btn btn-red btn-xs" data-id="${item.id}" data-action="delete">Delete</button>`:''}
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+/* ── EVENT DELEGATION — table clicks sab yahan handle honge ── */
+// ✅ FIX 5: Ek central click handler — koi inline onclick string nahi
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('[data-action]');
+  if(!btn) return;
+  const action = btn.dataset.action;
+  const id     = btn.dataset.id;
+  const src    = btn.dataset.src;
+
+  if(action === 'lightbox') openLightbox(src || btn.src);
+  if(action === 'edit')     openEdit(id);
+  if(action === 'move')     openMove(id);
+  if(action === 'delete')   deleteItem(id);
+});
+
+/* ── RACKS ── */
+function renderRacks() {
+  const grid = document.getElementById('rack-grid');
+  if(!racks.length) { grid.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🗄</div><div class="empty-text">No racks yet — add them in Manage tab</div></div>`; return; }
+  grid.innerHTML = racks.map(rack=>{
+    const rI = items.filter(i=>i.rack===rack);
+    const prev = rI.slice(0,3).map(i=>`<div class="rack-tag-item">${esc(i.name)}</div>`).join('');
+    const more = rI.length>3?`<div class="rack-tag-item">+${rI.length-3} more</div>`:'';
+    // ✅ data-rack attribute use karo
+    return `<div class="rack-card" data-rack="${esc(rack)}">
+      <div class="rack-name">${esc(rack)}</div>
+      <div class="rack-count">${rI.length}</div>
+      <div class="rack-label">Items</div>
+      <div class="rack-preview">${prev}${more}</div>
+    </div>`;
+  }).join('');
+
+  // Rack cards click
+  document.querySelectorAll('.rack-card[data-rack]').forEach(card => {
+    card.addEventListener('click', () => openRackDetail(card.dataset.rack));
+  });
+}
+
+function openRackDetail(rack) {
+  currentRack = rack;
+  document.getElementById('rack-list-view').style.display='none';
+  document.getElementById('rack-detail-view').style.display='block';
+  const rI = items.filter(i=>i.rack===rack);
+  document.getElementById('rd-title').textContent = rack;
+  document.getElementById('rd-sub').textContent   = `${rI.length} item${rI.length!==1?'s':''} in this rack`;
+  renderTable(rI,'rack-detail-body',false);
+}
+
+function closeRackDetail() {
+  currentRack=null;
+  document.getElementById('rack-detail-view').style.display='none';
+  document.getElementById('rack-list-view').style.display='';
+  renderRacks();
+}
+
+/* ── MANAGE ── */
+function renderManage() {
+  const tagsEl = document.getElementById('rack-tags');
+  tagsEl.innerHTML = racks.length
+    ? racks.map(r=>`<div class="rtag">${esc(r)}<button class="rtag-del" data-rack="${esc(r)}">×</button></div>`).join('')
+    : `<span style="color:var(--text2);font-size:13px">No racks yet</span>`;
+
+  // ✅ Rack delete buttons — event delegation via data-rack
+  document.querySelectorAll('.rtag-del[data-rack]').forEach(btn => {
+    btn.addEventListener('click', () => deleteRack(btn.dataset.rack));
+  });
+
+  const tbody = document.getElementById('manage-body');
+  if(!items.length) { tbody.innerHTML=`<tr><td colspan="12"><div class="empty"><div class="empty-icon">📦</div><div class="empty-text">No items yet</div></div></td></tr>`; return; }
+  tbody.innerHTML = items.map(item=>`
+    <tr>
+      <td>${imgCell(item)}</td>
+      <td><div class="item-name">${esc(item.name)}</div></td>
+      <td><span class="cell-mono">${esc(item.sku)||'—'}</span></td>
+      <td>${item.type?`<span class="badge badge-type">${esc(item.type)}</span>`:'—'}</td>
+      <td>${item.cat?`<span class="badge badge-cat">${esc(item.cat)}</span>`:'—'}</td>
+      <td><span class="cell-mono" style="font-size:11px">${esc(item.subclass)||'—'}</span></td>
+      <td><span class="cell-mono" style="font-size:11px">${esc(item.brand)||'—'}</span></td>
+      <td>${colorCell(item)}</td>
+      <td><span class="badge badge-rack">${esc(item.rack)}</span></td>
+      <td><span class="badge badge-qty">${item.qty}</span></td>
+      <td><span class="cell-mono">${item.price?'₹'+item.price.toLocaleString('en-IN'):'—'}</span></td>
+      <td>
+        <div class="cell-actions">
+          <button class="btn btn-blue btn-xs" data-id="${item.id}" data-action="move">Move</button>
+          <button class="btn btn-ghost btn-xs" data-id="${item.id}" data-action="edit">Edit</button>
+          <button class="btn btn-red btn-xs" data-id="${item.id}" data-action="delete">Delete</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+function addRack() {
+  const name=document.getElementById('new-rack-name').value.trim();
+  const al=document.getElementById('alert-rack');
+  if(!name){showAlert(al,'Please enter a rack name.','error');return;}
+  if(racks.includes(name)){showAlert(al,'This rack already exists.','error');return;}
+  racks.push(name);
+  document.getElementById('new-rack-name').value='';
+  showAlert(al,`✓ Rack "${name}" added.`,'success');
+  refreshAll();
+  renderManage();
+  if(gsUrl) pushToGS('addRack',{name});
+}
+
+function deleteRack(rack) {
+  if(items.some(i=>i.rack===rack)){alert(`Cannot delete "${rack}" — it contains items. Move them first.`);return;}
+  if(!confirm(`Delete rack "${rack}"?`)) return;
+  racks=racks.filter(r=>r!==rack); refreshAll(); renderManage();
+}
+
+function deleteItem(id) {
+  if(!confirm('Delete this item permanently?')) return;
+  items=items.filter(i=>i.id!==id); refreshAll(); renderManage();
+  if(gsUrl) pushToGS('deleteItem',{id});
+}
+
+/* ── MOVE ── */
+function openMove(id) {
+  moveTarget=id;
+  const item=items.find(i=>i.id===id); if(!item) return;
+  document.getElementById('move-display').value=`${item.name}  (currently in: ${item.rack})`;
+  refreshDropdowns();
+  document.getElementById('move-rack').value=item.rack;
+  openModal('move-overlay');
+}
+function confirmMove() {
+  const newRack=v('move-rack');
+  const item=items.find(i=>i.id===moveTarget);
+  if(item) { item.rack=newRack; }
+  closeModal('move-overlay'); refreshAll();
+  if(gsUrl) pushToGS('updateItem',item);
+}
+
+/* ── EDIT ── */
+function openEdit(id) {
+  const item=items.find(i=>i.id===id); if(!item) return;
+  document.getElementById('edit-id').value       = id;
+  document.getElementById('edit-name').value     = item.name||'';
+  document.getElementById('edit-sku').value      = item.sku||'';
+  document.getElementById('edit-barcode').value  = item.barcode||'';
+  document.getElementById('edit-type').value     = item.type||'';
+  document.getElementById('edit-cat').value      = item.cat||'';
+  document.getElementById('edit-subclass').value = item.subclass||'';
+  document.getElementById('edit-brand').value    = item.brand||'';
+  document.getElementById('edit-material').value = item.material||'';
+  document.getElementById('edit-color').value    = item.color||'';
+  document.getElementById('edit-size').value     = item.size||'';
+  document.getElementById('edit-weight').value   = item.weight||'';
+  document.getElementById('edit-qty').value      = item.qty||0;
+  document.getElementById('edit-cost').value     = item.cost||0;
+  document.getElementById('edit-price').value    = item.price||0;
+  document.getElementById('edit-notes').value    = item.notes||'';
+  document.getElementById('edit-img').value      = item.image||'';
+  document.getElementById('edit-img-url').value  = '';
+  if(item.color && item.color.startsWith('#')) document.getElementById('edit-color-picker').value=item.color;
+  const prev=document.getElementById('edit-preview');
+  if(item.image) { prev.style.display='block'; prev.innerHTML=buildPreview(item.image,item.name); }
+  else { prev.style.display='none'; prev.innerHTML=''; }
+  refreshDropdowns();
+  document.getElementById('edit-rack').value=item.rack||'';
+  openModal('edit-overlay');
+}
+
+function confirmEdit() {
+  const id=document.getElementById('edit-id').value;
+  const item=items.find(i=>i.id===id); if(!item) return;
+  item.name     = document.getElementById('edit-name').value.trim();
+  item.sku      = document.getElementById('edit-sku').value.trim();
+  item.barcode  = document.getElementById('edit-barcode').value.trim();
+  item.type     = document.getElementById('edit-type').value.trim();
+  item.cat      = document.getElementById('edit-cat').value.trim();
+  item.subclass = document.getElementById('edit-subclass').value.trim();
+  item.brand    = document.getElementById('edit-brand').value.trim();
+  item.material = document.getElementById('edit-material').value.trim();
+  item.color    = document.getElementById('edit-color').value.trim();
+  item.size     = document.getElementById('edit-size').value.trim();
+  item.weight   = document.getElementById('edit-weight').value.trim();
+  item.rack     = document.getElementById('edit-rack').value;
+  item.qty      = parseInt(document.getElementById('edit-qty').value)||0;
+  item.cost     = parseFloat(document.getElementById('edit-cost').value)||0;
+  item.price    = parseFloat(document.getElementById('edit-price').value)||0;
+  item.notes    = document.getElementById('edit-notes').value.trim();
+  const newImg  = document.getElementById('edit-img').value;
+  if(newImg) item.image = newImg;
+  closeModal('edit-overlay'); refreshAll();
+  if(gsUrl) pushToGS('updateItem',item);
+}
+
+/* ── IMAGE HANDLING ── */
+function handleFile(input, zoneId, previewId, dataId) {
+  const file=input.files[0]; if(!file) return;
+  if(file.size > 2*1024*1024){alert('Image too large. Please use an image under 2 MB.');return;}
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const url=e.target.result;
+    document.getElementById(dataId).value=url;
+    const prev=document.getElementById(previewId);
+    prev.style.display='block'; prev.innerHTML=buildPreview(url,file.name);
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleDrop(event, zoneId, previewId, dataId) {
+  event.preventDefault();
+  document.getElementById(zoneId).classList.remove('drag-over');
+  const file=event.dataTransfer.files[0];
+  if(!file||!file.type.startsWith('image/')) return;
+  handleFile({files:[file]}, zoneId, previewId, dataId);
+}
+
+function handleUrl(url, previewId, dataId) {
+  document.getElementById(dataId).value=url||'';
+  const prev=document.getElementById(previewId);
+  if(!url){prev.style.display='none';prev.innerHTML='';return;}
+  prev.style.display='block'; prev.innerHTML=buildPreview(url,'URL Image');
+}
+
+function buildPreview(src, name) {
+  return `<div class="img-preview-wrap">
+    <img src="${src}" alt="${esc(name)}" onerror="this.parentElement.innerHTML='<span style=color:var(--red);font-size:12px>Could not load image</span>'">
+    <div class="img-preview-info">
+      <div class="img-preview-name">${esc(name)}</div>
+      <div style="margin-top:4px">Image ready to save</div>
+      <button type="button" class="btn btn-ghost btn-xs" style="margin-top:8px" onclick="clearPreview(this)">Remove</button>
+    </div>
+  </div>`;
+}
+
+function clearPreview(btn) {
+  const prev=btn.closest('[id$="-preview"]');
+  if(!prev) return;
+  prev.style.display='none'; prev.innerHTML='';
+  const dataId=prev.id.replace('-preview','-img');
+  const el=document.getElementById(dataId); if(el) el.value='';
+}
+
+/* ── LIGHTBOX ── */
+function openLightbox(src) { document.getElementById('lb-img').src=src; document.getElementById('lightbox').classList.add('open'); }
+function closeLightbox()   { document.getElementById('lightbox').classList.remove('open'); }
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLightbox();document.querySelectorAll('.overlay.open').forEach(o=>o.classList.remove('open'));}});
+
+/* ── CSV ── */
+const CSV_HEADERS = ['ID','Name','SKU','Barcode','Product Type','Category','Sub Class','Brand','Material','Color','Size','Weight','Rack','Qty','Cost','Price','Notes','Image URL','Added On'];
+function toCSV(data) {
+  const rows = data.map(i=>[i.id,q(i.name),q(i.sku),q(i.barcode),q(i.type),q(i.cat),q(i.subclass),q(i.brand),q(i.material),q(i.color),q(i.size),q(i.weight),q(i.rack),i.qty,i.cost,i.price,q(i.notes),q(i.image&&i.image.startsWith('http')?i.image:''),q(i.added)]);
+  return [CSV_HEADERS.join(','),...rows.map(r=>r.join(','))].join('\n');
+}
+function q(s){return `"${(s||'').replace(/"/g,'""')}"`;  }
+function dlCSV(csv,fn){const b=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=fn;a.click();}
+function exportCSV()       { dlCSV(toCSV(items),`warehouse_all_${today()}.csv`); }
+function exportSearchCSV() { dlCSV(toCSV(filteredItems),`warehouse_search_${today()}.csv`); }
+function exportRackCSV()   { if(currentRack) dlCSV(toCSV(items.filter(i=>i.rack===currentRack)),`${currentRack.replace(/\s/g,'_')}_${today()}.csv`); }
+function today()           { return new Date().toISOString().slice(0,10); }
+
+function importCSV(event) {
+  const file=event.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const lines=e.target.result.split('\n').filter(l=>l.trim());
+    if(lines.length<2){alert('CSV has no data rows.');return;}
+    const imported=[];
+    for(let i=1;i<lines.length;i++){
+      const c=parseCSVLine(lines[i]); if(!c[1]) continue;
+      const rack=c[12]||racks[0]||'Rack-A1';
+      if(!racks.includes(rack)) racks.push(rack);
+      imported.push({id:c[0]||genId(),name:c[1]||'',sku:c[2]||'',barcode:c[3]||'',type:c[4]||'',cat:c[5]||'',subclass:c[6]||'',brand:c[7]||'',material:c[8]||'',color:c[9]||'',size:c[10]||'',weight:c[11]||'',rack,qty:parseInt(c[13])||0,cost:parseFloat(c[14])||0,price:parseFloat(c[15])||0,notes:c[16]||'',image:c[17]||'',added:c[18]||today()});
+    }
+    const replace=confirm(`Found ${imported.length} items.\n\nOK = Replace existing data\nCancel = Add to existing data`);
+    if(replace){items=imported;}else{items=[...items,...imported];}
+    // ✅ nextId recalculate after import
+    const maxNum = Math.max(...items.map(i => parseInt(i.id.replace(/\D/g,''))||0), 0);
+    nextId = maxNum + 1;
+    refreshAll(); alert(`✓ ${imported.length} items imported.`);
+  };
+  reader.readAsText(file,'UTF-8'); event.target.value='';
+}
+
+function parseCSVLine(line) {
+  const res=[]; let cur='',inQ=false;
+  for(let i=0;i<line.length;i++){
+    if(line[i]==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else inQ=!inQ;}
+    else if(line[i]===','&&!inQ){res.push(cur.trim());cur='';}
+    else cur+=line[i];
+  }
+  res.push(cur.trim()); return res;
+}
+
+/* ── GOOGLE SHEETS ── */
+function updateConnStatus() {
+  const on=!!gsUrl;
+  ['conn-status','conn-status2'].forEach(id=>{
+    const el=document.getElementById(id); if(!el) return;
+    el.className=`conn-badge ${on?'online':'offline'}`;
+    el.innerHTML=`<span class="conn-dot"></span>${on?'Connected to Google Sheets':'Local Mode'}`;
+  });
+  if(gsUrl&&document.getElementById('gs-url')) document.getElementById('gs-url').value=gsUrl;
+}
+function saveConn(){const url=v('gs-url').trim();const al=document.getElementById('alert-setup');if(!url){showAlert(al,'Enter the Web App URL.','error');return;}gsUrl=url;localStorage.setItem('ws_gs_url',gsUrl);updateConnStatus();fetchFromGS();}
+function clearConn(){gsUrl='';localStorage.removeItem('ws_gs_url');document.getElementById('gs-url').value='';updateConnStatus();}
+function testConn(){const url=v('gs-url').trim();const al=document.getElementById('alert-setup');if(!url){showAlert(al,'Enter the URL first.','error');return;}showAlert(al,'Testing...','info');fetch(`${url}?action=ping`).then(r=>r.json()).then(d=>showAlert(al,d.status==='ok'?'✓ Connection successful!':'Unexpected response.','success')).catch(()=>showAlert(al,'Connection failed. Check URL and deployment.','error'));}
+function fetchFromGS(){if(!gsUrl)return;showLoading(true);fetch(`${gsUrl}?action=getAll`).then(r=>r.json()).then(d=>{if(d.items)items=d.items;if(d.racks)racks=d.racks;refreshAll();showLoading(false);}).catch(()=>showLoading(false));}
+function pushToGS(action,data){if(!gsUrl)return;fetch(gsUrl,{method:'POST',body:JSON.stringify({action,...data})});}
+
+/* ── HELPERS ── */
+function v(id){return document.getElementById(id)?.value||'';}
+function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function showLoading(b){document.getElementById('loading').classList.toggle('show',b);}
+function showAlert(el,msg,type){el.textContent=msg;el.className=`alert show alert-${type}`;clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),4000);}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+
+/* ── BOOT ── */
+init();
+</script>
+</body>
+</html>
