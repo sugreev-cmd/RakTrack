@@ -501,20 +501,11 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
 
 <script>
 /* ── STATE ── */
-// ✅ FIX 1: Items ko numeric IDs se define karo (string IDs template literals mein quote conflict karti thi)
-let items = [
-  {id:'item_1',name:'Ceramic Vase Blue',sku:'SKU-001',barcode:'8901000000001',type:'Home Decor',cat:'Vase',subclass:'Ceramic',brand:'ArtCraft',material:'Ceramic',color:'Blue',size:'30×15 cm',weight:'500g',rack:'Rack-A1',qty:5,cost:800,price:1200,notes:'Handle with care',image:'https://images.unsplash.com/photo-1578500494198-246f612d3b3d?w=200&q=80',added:'2025-01-10'},
-  {id:'item_2',name:'Wooden Photo Frame 8x10',sku:'SKU-002',barcode:'8901000000002',type:'Home Decor',cat:'Frame',subclass:'Wood',brand:'WoodWorks',material:'Teak Wood',color:'Brown',size:'25×20 cm',weight:'300g',rack:'Rack-A2',qty:12,cost:300,price:450,notes:'',image:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&q=80',added:'2025-01-11'},
-  {id:'item_3',name:'Fairy Light Set Warm',sku:'SKU-003',barcode:'',type:'Lighting',cat:'Fairy Lights',subclass:'LED',brand:'GlowCo',material:'Copper Wire',color:'Warm White',size:'10m',weight:'200g',rack:'Rack-B1',qty:8,cost:200,price:320,notes:'Keep in original box',image:'https://images.unsplash.com/photo-1545127398-14699f92334b?w=200&q=80',added:'2025-01-12'},
-  {id:'item_4',name:'Cushion Cover Pink 16"',sku:'SKU-004',barcode:'',type:'Soft Furnishing',cat:'Cushion',subclass:'Fabric',brand:'HomeStyle',material:'Cotton',color:'Pink',size:'16×16 inch',weight:'150g',rack:'Rack-A1',qty:20,cost:120,price:180,notes:'',image:'https://images.unsplash.com/photo-1588556982819-1e9ba2b72a16?w=200&q=80',added:'2025-01-13'},
-  {id:'item_5',name:'Table Lamp Beige',sku:'SKU-005',barcode:'8901000000005',type:'Lighting',cat:'Lamp',subclass:'Table Lamp',brand:'LightHouse',material:'Metal + Fabric',color:'Beige',size:'45 cm height',weight:'1.2 kg',rack:'Rack-B2',qty:3,cost:1500,price:2200,notes:'Fragile — pack separately',image:'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=200&q=80',added:'2025-01-14'},
-  {id:'item_6',name:'Wall Clock Minimalist',sku:'SKU-006',barcode:'',type:'Home Decor',cat:'Clock',subclass:'Wall Decor',brand:'TimeCraft',material:'MDF + Glass',color:'Black',size:'30 cm diameter',weight:'400g',rack:'Section-C',qty:6,cost:600,price:890,notes:'',image:'https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=200&q=80',added:'2025-01-15'},
-];
-
+// Google Sheets connected ho toh wahan se data aayega
+// Local mode mein sample data dikhega
+let items = [];
 let racks = ['Rack-A1','Rack-A2','Rack-B1','Rack-B2','Section-C','Zone-D'];
-
-// ✅ FIX 2: nextId dynamically calculate karo — hardcoded value safe nahi hoti
-let nextId = items.length + 1;
+let nextId = 1;
 
 let moveTarget = null;
 let currentRack = null;
@@ -991,10 +982,40 @@ function importCSV(event) {
     }
     const replace=confirm(`Found ${imported.length} items.\n\nOK = Replace existing data\nCancel = Add to existing data`);
     if(replace){items=imported;}else{items=[...items,...imported];}
-    // ✅ nextId recalculate after import
     const maxNum = Math.max(...items.map(i => parseInt(i.id.replace(/\D/g,''))||0), 0);
     nextId = maxNum + 1;
-    refreshAll(); alert(`✓ ${imported.length} items imported.`);
+    refreshAll();
+
+    // ✅ FIX: CSV import ke baad Google Sheets mein bhi sync karo
+    if(gsUrl) {
+      const toSync = replace ? imported : imported; // sirf naye items push karo
+      showLoading(true);
+      // Ek ek item push karo GS mein
+      let done = 0;
+      const action = replace ? 'replaceAll' : 'addItem';
+
+      if(replace) {
+        // Pura data replace karo
+        fetch(gsUrl, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'replaceAll', items: items, racks: racks })
+        })
+        .then(r => r.json())
+        .then(() => { showLoading(false); alert(`✓ ${imported.length} items imported aur Google Sheets mein save ho gaye!`); })
+        .catch(() => { showLoading(false); alert(`✓ ${imported.length} items imported (local). Google Sheets sync failed — manually check karein.`); });
+      } else {
+        // Sirf naye items add karo one by one
+        function pushNext(i) {
+          if(i >= imported.length) { showLoading(false); alert(`✓ ${imported.length} items imported aur Google Sheets mein save ho gaye!`); return; }
+          fetch(gsUrl, { method:'POST', body: JSON.stringify({action:'addItem', ...imported[i]}) })
+            .then(() => pushNext(i+1))
+            .catch(() => pushNext(i+1));
+        }
+        pushNext(0);
+      }
+    } else {
+      alert(`✓ ${imported.length} items imported.`);
+    }
   };
   reader.readAsText(file,'UTF-8'); event.target.value='';
 }
@@ -1022,7 +1043,29 @@ function updateConnStatus() {
 function saveConn(){const url=v('gs-url').trim();const al=document.getElementById('alert-setup');if(!url){showAlert(al,'Enter the Web App URL.','error');return;}gsUrl=url;localStorage.setItem('ws_gs_url',gsUrl);updateConnStatus();fetchFromGS();}
 function clearConn(){gsUrl='';localStorage.removeItem('ws_gs_url');document.getElementById('gs-url').value='';updateConnStatus();}
 function testConn(){const url=v('gs-url').trim();const al=document.getElementById('alert-setup');if(!url){showAlert(al,'Enter the URL first.','error');return;}showAlert(al,'Testing...','info');fetch(`${url}?action=ping`).then(r=>r.json()).then(d=>showAlert(al,d.status==='ok'?'✓ Connection successful!':'Unexpected response.','success')).catch(()=>showAlert(al,'Connection failed. Check URL and deployment.','error'));}
-function fetchFromGS(){if(!gsUrl)return;showLoading(true);fetch(`${gsUrl}?action=getAll`).then(r=>r.json()).then(d=>{if(d.items)items=d.items;if(d.racks)racks=d.racks;refreshAll();showLoading(false);}).catch(()=>showLoading(false));}
+function fetchFromGS(){
+  if(!gsUrl) return;
+  showLoading(true);
+  fetch(`${gsUrl}?action=getAll`)
+    .then(r => r.json())
+    .then(d => {
+      if(d.items && d.items.length >= 0) items = d.items;
+      if(d.racks && d.racks.length > 0)  racks = d.racks;
+      // nextId update karo
+      if(items.length > 0) {
+        const maxNum = Math.max(...items.map(i => parseInt((i.id||'').replace(/\D/g,''))||0), 0);
+        nextId = maxNum + 1;
+      }
+      refreshAll();
+      showLoading(false);
+      updateConnStatus();
+    })
+    .catch(err => {
+      showLoading(false);
+      console.error('GS fetch error:', err);
+      // Connection fail hone par local data rakh lo
+    });
+}
 function pushToGS(action,data){if(!gsUrl)return;fetch(gsUrl,{method:'POST',body:JSON.stringify({action,...data})});}
 
 /* ── HELPERS ── */
