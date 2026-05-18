@@ -1059,49 +1059,83 @@ function confirmMove() {
   const movedBy = v('move-by').trim();
   const qty     = parseInt(v('move-qty'))||1;
   const notes   = v('move-notes').trim();
-  if(!movedBy){alert('Please enter who is moving/selling this item.');return;}
-  const item = items.find(i=>i.id===moveTarget); if(!item) return;
+
+  if(!movedBy){ alert('Please enter who is moving/selling this item.'); return; }
+  const item = items.find(i=>i.id===moveTarget);
+  if(!item) return;
+
+  // Validate qty
+  if(qty > item.qty){
+    alert(`Only ${item.qty} unit(s) available. Cannot move ${qty}.`);
+    return;
+  }
+
   localStorage.setItem('last_moved_by', movedBy);
 
-  const now = new Date();
-  const dateStr = now.toLocaleString('en-IN',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-  let logEntry = {
-    id:       'ml'+Date.now(),
-    datetime: dateStr,
-    itemId:   item.id,
-    itemName: item.name,
-    sku:      item.sku||'',
-    type:     item.type||'',
+  const now     = new Date();
+  const dateStr = now.toLocaleString('en-IN',{
+    day:'2-digit',month:'2-digit',year:'numeric',
+    hour:'2-digit',minute:'2-digit',hour12:false
+  });
+
+  const logEntry = {
+    id:        'ml'+Date.now(),
+    datetime:  dateStr,
+    itemId:    item.id,
+    itemName:  item.name,
+    sku:       item.sku||'',
+    type:      item.type||'',
     action,
-    from:     item.rack,
-    to:       '',
+    from:      item.rack,
+    to:        '',
     qty,
-    salePrice:0,
+    salePrice: 0,
     movedBy,
     notes,
-    addedOn:  now.toISOString().slice(0,10)
+    addedOn:   now.toISOString().slice(0,10)
   };
 
-  if(action==='sold'){
-    logEntry.to='SOLD';
-    logEntry.salePrice=parseFloat(v('move-sale-price'))||0;
-    item.qty=Math.max(0,item.qty-qty);
-    if(item.qty===0) item.rack='[Sold Out]';
-  } else if(action==='showroom'){
-    const sname=v('move-showroom-name').trim()||'Showroom';
-    logEntry.to=sname;
-    item.qty=Math.max(0,item.qty-qty);
+  const originalRack = item.rack;
+
+  if(action === 'sold'){
+    // ── SOLD: reduce qty, if 0 mark sold out ──
+    logEntry.to        = 'SOLD';
+    logEntry.salePrice = parseFloat(v('move-sale-price'))||0;
+    item.qty           = Math.max(0, item.qty - qty);
+    if(item.qty === 0) item.rack = '[Sold Out]';
+
+  } else if(action === 'showroom'){
+    // ── SHOWROOM: reduce qty from warehouse
+    //   if partial qty → item stays in warehouse with reduced qty
+    //   if full qty    → item moves to showroom
+    const sname = v('move-showroom-name').trim() || 'Showroom';
+    logEntry.to = sname;
+    item.qty    = Math.max(0, item.qty - qty);
+
     if(!racks.includes(sname)) racks.push(sname);
-    if(item.qty===0) item.rack=sname; else item.rack=sname;
+
+    if(item.qty === 0){
+      // All stock moved to showroom
+      item.rack = sname;
+    }
+    // else: item stays in original rack with reduced qty
+
   } else {
-    const newRack=v('move-rack');
-    logEntry.to=newRack;
-    item.rack=newRack;
+    // ── WAREHOUSE MOVE: just change rack, qty unchanged ──
+    const newRack  = v('move-rack');
+    logEntry.to    = newRack;
+    item.rack      = newRack;
   }
 
   movementLog.unshift(logEntry);
-  closeModal('move-overlay'); refreshAll();
-  if(gsUrl){pushToGS('updateItem',item); pushToGS('addMovement',logEntry);}
+  closeModal('move-overlay');
+  refreshAll();
+
+  // Push both item update AND movement log to Google Sheets
+  if(gsUrl){
+    pushToGS('updateItem', item);
+    pushToGS('addMovement', logEntry);
+  }
 }
 
 /* ── EDIT ── */
@@ -1272,7 +1306,16 @@ function saveConn(){const url=v('gs-url').trim();const al=document.getElementByI
 function clearConn(){gsUrl='';localStorage.removeItem('ws_gs_url');document.getElementById('gs-url').value='';updateConnStatus();}
 function testConn(){const url=v('gs-url').trim();const al=document.getElementById('alert-setup');if(!url){showAlert(al,'Enter the URL first.','error');return;}showAlert(al,'Testing...','info');fetch(`${url}?action=ping`).then(r=>r.json()).then(d=>showAlert(al,d.status==='ok'?'✓ Connection successful!':'Unexpected response.','success')).catch(()=>showAlert(al,'Connection failed. Check URL and deployment.','error'));}
 function fetchFromGS(){if(!gsUrl)return;showLoading(true);fetch(`${gsUrl}?action=getAll`).then(r=>r.json()).then(d=>{if(d.items)items=d.items;if(d.racks)racks=d.racks;if(d.movements)movementLog=d.movements;refreshAll();showLoading(false);}).catch(()=>showLoading(false));}
-function pushToGS(action,data){if(!gsUrl)return;fetch(gsUrl,{method:'POST',body:JSON.stringify({action,...data})});}
+function pushToGS(action,data){
+  if(!gsUrl) return;
+  // no-cors needed for GAS POST from browser (fire-and-forget)
+  fetch(gsUrl, {
+    method: 'POST',
+    mode:   'no-cors',
+    headers: {'Content-Type':'text/plain'},
+    body:    JSON.stringify({action, ...data})
+  }).catch(err=>console.warn('GS push failed:',err));
+}
 
 /* ── HELPERS ── */
 function v(id){return document.getElementById(id)?.value||'';}
