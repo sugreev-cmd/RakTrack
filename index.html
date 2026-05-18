@@ -12,7 +12,28 @@
   --blue:#4080ff; --green:#28c77a; --red:#e05050; --purple:#9060f0;
   --text:#e8ecf8; --text2:#7880a0; --text3:#4a5070;
   --radius:10px; --mono:'IBM Plex Mono',monospace; --body:'Outfit',sans-serif; --display:'Syne',sans-serif;
+  --orange:#f07030;
 }
+/* ── Light Mode ── */
+body.light {
+  --bg:#f4f5f8; --surf:#ffffff; --surf2:#eceef4; --surf3:#dde0ea;
+  --border:#d0d4e0; --gold:#c07010; --gold2:#e09020;
+  --blue:#2060e0; --green:#18a060; --red:#d03030; --purple:#7040d0;
+  --text:#1a1e2e; --text2:#5060808; --text2:#506080; --text3:#8090b0;
+  --orange:#d06020;
+}
+body.light .rack-card:hover{box-shadow:0 12px 32px rgba(0,0,0,.15)}
+body.light tbody tr:hover td{background:rgba(0,0,0,.02)}
+body.light .lightbox{background:rgba(0,0,0,.85)}
+/* Theme toggle btn */
+.theme-btn{background:var(--surf2);border:1px solid var(--border);color:var(--text2);border-radius:20px;padding:5px 12px;font-size:13px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
+.theme-btn:hover{border-color:var(--gold);color:var(--gold)}
+/* Movement badge */
+.badge-sold{background:rgba(240,112,48,.12);color:var(--orange);border:1px solid rgba(240,112,48,.25)}
+.badge-showroom{background:rgba(144,96,240,.12);color:var(--purple);border:1px solid rgba(144,96,240,.25)}
+/* Movement log table */
+.log-row-sale td{background:rgba(240,112,48,.04)}
+.log-row-move td{background:rgba(144,96,240,.04)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:var(--body);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5}
@@ -22,6 +43,7 @@ input,select,textarea{font-family:var(--body)}
 ::-webkit-scrollbar-track{background:var(--surf)}
 ::-webkit-scrollbar-thumb{background:var(--surf3);border-radius:3px}
 
+/* Header */
 .header{background:var(--surf);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;gap:16px}
 .logo{font-family:var(--display);font-size:17px;font-weight:800;color:var(--gold);letter-spacing:1px;white-space:nowrap}
 .logo em{color:var(--text2);font-style:normal;font-weight:400}
@@ -31,28 +53,34 @@ input,select,textarea{font-family:var(--body)}
 .hstat-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px}
 .header-actions{display:flex;gap:8px}
 
+/* Buttons */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius);border:none;font-size:13px;font-weight:600;transition:all .15s;white-space:nowrap;line-height:1}
 .btn-gold{background:var(--gold);color:#000}.btn-gold:hover{background:var(--gold2);transform:translateY(-1px)}
 .btn-green{background:var(--green);color:#000}.btn-green:hover{opacity:.85;transform:translateY(-1px)}
 .btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{opacity:.85}
 .btn-red{background:var(--red);color:#fff}.btn-red:hover{opacity:.85}
 .btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border)}.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.btn-purple{background:var(--purple);color:#fff}.btn-purple:hover{opacity:.85}
 .btn-sm{padding:5px 11px;font-size:12px}.btn-xs{padding:3px 9px;font-size:11px}
 .btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
 
+/* Tabs */
 .tabs{background:var(--surf);border-bottom:1px solid var(--border);display:flex;padding:0 24px;gap:2px;overflow-x:auto}
 .tab{padding:14px 18px;font-size:13px;font-weight:500;color:var(--text2);border:none;background:none;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;cursor:pointer}
 .tab:hover{color:var(--text)}.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
 
+/* Layout */
 .main{padding:24px;max-width:1300px;margin:0 auto}
 .panel{display:none;animation:fadeIn .2s ease}.panel.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
+/* Card */
 .card{background:var(--surf);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:18px}
 .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap}
 .card-title{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--gold)}
 .card-subtitle{font-size:12px;color:var(--text2);margin-top:2px}
 
+/* Form */
 .form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
 .form-group{display:flex;flex-direction:column;gap:6px}
 .form-group.half{grid-column:span 1}
@@ -67,12 +95,14 @@ textarea.form-input{resize:vertical;min-height:70px}
 .form-section-label{grid-column:1/-1;font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:2px;border-bottom:1px solid var(--border);padding-bottom:8px;margin-top:6px}
 .form-actions{margin-top:18px;display:flex;gap:10px}
 
+/* Alert */
 .alert{padding:10px 14px;border-radius:var(--radius);font-size:13px;margin-bottom:14px;display:none}
 .alert.show{display:block}
 .alert-success{background:rgba(40,199,122,.12);border:1px solid rgba(40,199,122,.3);color:var(--green)}
 .alert-error{background:rgba(224,80,80,.12);border:1px solid rgba(224,80,80,.3);color:var(--red)}
 .alert-info{background:rgba(64,128,255,.12);border:1px solid rgba(64,128,255,.3);color:var(--blue)}
 
+/* Table */
 .table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border)}
 table{width:100%;border-collapse:collapse}
 thead th{background:var(--surf2);padding:10px 14px;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text2);text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
@@ -84,6 +114,7 @@ tbody tr:hover td{background:rgba(255,255,255,.02)}
 .cell-mono{font-family:var(--mono);font-size:11px;color:var(--text2)}
 .cell-actions{display:flex;gap:5px;flex-wrap:wrap}
 
+/* Badge */
 .badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-family:var(--mono);font-size:10px;font-weight:500;white-space:nowrap}
 .badge-rack{background:rgba(232,160,32,.12);color:var(--gold);border:1px solid rgba(232,160,32,.25)}
 .badge-cat{background:rgba(64,128,255,.12);color:var(--blue);border:1px solid rgba(64,128,255,.25)}
@@ -91,19 +122,23 @@ tbody tr:hover td{background:rgba(255,255,255,.02)}
 .badge-type{background:rgba(144,96,240,.12);color:var(--purple);border:1px solid rgba(144,96,240,.25)}
 .badge-color{background:rgba(255,255,255,.06);color:var(--text2);border:1px solid var(--border)}
 
+/* Color dot */
 .color-dot{width:12px;height:12px;border-radius:50%;border:1px solid rgba(255,255,255,.2);display:inline-block;flex-shrink:0}
 
+/* Search */
 .search-row{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
 .search-wrap{position:relative;flex:1;min-width:200px}
 .search-wrap .form-input{padding-left:38px}
 .search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none}
 .filter-select{width:160px;flex-shrink:0}
 
+/* Image */
 .img-thumb{width:56px;height:56px;object-fit:cover;border-radius:8px;border:1px solid var(--border);cursor:pointer;transition:transform .15s,border-color .15s;display:block}
 .img-thumb:hover{transform:scale(1.1);border-color:var(--gold)}
 .img-placeholder{width:56px;height:56px;border-radius:8px;border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:20px;cursor:pointer;transition:all .15s}
 .img-placeholder:hover{border-color:var(--gold);color:var(--gold)}
 
+/* Image upload zone */
 .img-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:20px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:var(--bg)}
 .img-zone:hover,.img-zone.drag-over{border-color:var(--gold);background:rgba(232,160,32,.04)}
 .img-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
@@ -112,6 +147,7 @@ tbody tr:hover td{background:rgba(255,255,255,.02)}
 .img-preview-info{flex:1;font-size:12px;color:var(--text2)}
 .img-preview-name{font-weight:600;color:var(--text);margin-bottom:3px;font-size:13px}
 
+/* Rack Grid */
 .rack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:14px}
 .rack-card{background:var(--surf);border:1px solid var(--border);border-radius:14px;padding:18px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
 .rack-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold2))}
@@ -122,11 +158,13 @@ tbody tr:hover td{background:rgba(255,255,255,.02)}
 .rack-preview{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
 .rack-tag-item{font-size:10px;background:var(--surf2);border:1px solid var(--border);padding:2px 7px;border-radius:4px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:155px}
 
+/* Manage rack tags */
 .rack-tags{display:flex;flex-wrap:wrap;gap:10px}
 .rtag{display:inline-flex;align-items:center;gap:8px;background:var(--surf2);border:1px solid var(--border);border-radius:var(--radius);padding:7px 12px;font-family:var(--mono);font-size:12px;color:var(--gold)}
 .rtag-del{color:var(--text3);background:none;border:none;font-size:16px;line-height:1;cursor:pointer;padding:0}
 .rtag-del:hover{color:var(--red)}
 
+/* Modal */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;z-index:200;backdrop-filter:blur(4px)}
 .overlay.open{display:flex}
 .modal{background:var(--surf);border:1px solid var(--border);border-radius:16px;padding:26px;width:94%;max-width:680px;max-height:90vh;overflow-y:auto;animation:mIn .2s ease}
@@ -134,6 +172,7 @@ tbody tr:hover td{background:rgba(255,255,255,.02)}
 .modal-title{font-family:var(--display);font-size:16px;font-weight:700;color:var(--gold);margin-bottom:18px}
 .modal-actions{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
 
+/* Lightbox */
 .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.93);display:none;align-items:center;justify-content:center;z-index:500;cursor:zoom-out}
 .lightbox.open{display:flex}
 .lightbox img{max-width:90vw;max-height:88vh;object-fit:contain;border-radius:12px;box-shadow:0 24px 80px rgba(0,0,0,.8);animation:lbIn .2s ease}
@@ -141,16 +180,19 @@ tbody tr:hover td{background:rgba(255,255,255,.02)}
 .lb-close:hover{background:rgba(255,255,255,.2)}
 @keyframes lbIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
 
+/* Loading */
 .loading-overlay{position:fixed;inset:0;background:rgba(12,14,20,.88);display:none;align-items:center;justify-content:center;z-index:300;flex-direction:column;gap:14px;backdrop-filter:blur(4px)}
 .loading-overlay.show{display:flex}
 .spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* Conn badge */
 .conn-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:5px 11px;border-radius:20px;font-family:var(--mono)}
 .conn-badge.offline{background:rgba(224,80,80,.12);color:var(--red);border:1px solid rgba(224,80,80,.3)}
 .conn-badge.online{background:rgba(40,199,122,.12);color:var(--green);border:1px solid rgba(40,199,122,.3)}
 .conn-dot{width:7px;height:7px;border-radius:50%;background:currentColor}
 
+/* Steps */
 .steps{display:flex;flex-direction:column}
 .step{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--border)}
 .step:last-child{border-bottom:none}
@@ -159,9 +201,11 @@ tbody tr:hover td{background:rgba(255,255,255,.02)}
 .step-desc{font-size:13px;color:var(--text2);line-height:1.6}
 code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px solid var(--border);padding:1px 6px;border-radius:4px;color:var(--gold2)}
 
+/* Back btn */
 .back-btn{display:inline-flex;align-items:center;gap:7px;background:none;border:none;color:var(--text2);font-size:13px;cursor:pointer;margin-bottom:18px;transition:color .15s}
 .back-btn:hover{color:var(--gold)}
 
+/* Empty */
 .empty{text-align:center;padding:52px 20px}
 .empty-icon{font-size:42px;margin-bottom:12px;opacity:.4}
 .empty-text{font-size:13px;color:var(--text2)}
@@ -191,6 +235,7 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
     <div class="hstat"><span class="hstat-val" id="s-types">0</span><span class="hstat-lbl">Types</span></div>
   </div>
   <div class="header-actions">
+    <button class="theme-btn" id="theme-btn" onclick="toggleTheme()">🌙 Dark</button>
     <button class="btn btn-ghost btn-sm" onclick="exportCSV()">⬇ Export CSV</button>
     <button class="btn btn-ghost btn-sm" onclick="document.getElementById('file-import').click()">⬆ Import CSV</button>
     <input type="file" id="file-import" accept=".csv" style="display:none" onchange="importCSV(event)">
@@ -202,12 +247,13 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
   <button class="tab" onclick="switchTab('search')">⌕ Search</button>
   <button class="tab" onclick="switchTab('racks')">▦ Rack View</button>
   <button class="tab" onclick="switchTab('manage')">✦ Manage</button>
+  <button class="tab" onclick="switchTab('movements')">📋 Movement Log</button>
   <button class="tab" onclick="switchTab('setup')">⚙ Google Sheets</button>
 </nav>
 
 <main class="main">
 
-  <!-- ADD ITEM -->
+  <!-- ── ADD ITEM ── -->
   <div class="panel active" id="panel-add">
     <div class="card">
       <div class="card-header">
@@ -216,18 +262,50 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
       </div>
       <div id="alert-add" class="alert"></div>
       <div class="form-grid">
+
+        <!-- Basic Info -->
         <div class="form-section-label">📦 Basic Information</div>
-        <div class="form-group half"><label class="form-label">Item Name *</label><input class="form-input" id="f-name" type="text" placeholder="e.g. Ceramic Vase Blue Large"></div>
-        <div class="form-group half"><label class="form-label">SKU / Item Code</label><input class="form-input" id="f-sku" type="text" placeholder="e.g. SKU-001"></div>
-        <div class="form-group half"><label class="form-label">Barcode / EAN</label><input class="form-input" id="f-barcode" type="text" placeholder="e.g. 8901234567890"></div>
+        <div class="form-group half">
+          <label class="form-label">Item Name *</label>
+          <input class="form-input" id="f-name" type="text" placeholder="e.g. Ceramic Vase Blue Large">
+        </div>
+        <div class="form-group half">
+          <label class="form-label">SKU / Item Code</label>
+          <input class="form-input" id="f-sku" type="text" placeholder="e.g. SKU-001">
+        </div>
+        <div class="form-group half">
+          <label class="form-label">Barcode / EAN</label>
+          <input class="form-input" id="f-barcode" type="text" placeholder="e.g. 8901234567890">
+        </div>
 
+        <!-- Classification -->
         <div class="form-section-label">🏷 Classification</div>
-        <div class="form-group half"><label class="form-label">Product Type</label><input class="form-input" id="f-type" type="text" list="type-list" placeholder="e.g. Home Decor, Furniture"><datalist id="type-list"></datalist></div>
-        <div class="form-group half"><label class="form-label">Category</label><input class="form-input" id="f-cat" type="text" list="cat-list" placeholder="e.g. Vase, Lamp, Cushion"><datalist id="cat-list"></datalist></div>
-        <div class="form-group half"><label class="form-label">Sub Class</label><input class="form-input" id="f-subclass" type="text" list="subclass-list" placeholder="e.g. Ceramic, Metal, Fabric"><datalist id="subclass-list"></datalist></div>
-        <div class="form-group half"><label class="form-label">Brand / Supplier</label><input class="form-input" id="f-brand" type="text" list="brand-list" placeholder="e.g. Artcraft, HomeStyle"><datalist id="brand-list"></datalist></div>
-        <div class="form-group half"><label class="form-label">Material</label><input class="form-input" id="f-material" type="text" placeholder="e.g. Ceramic, Wood, Glass"></div>
+        <div class="form-group half">
+          <label class="form-label">Product Type</label>
+          <input class="form-input" id="f-type" type="text" list="type-list" placeholder="e.g. Home Decor, Furniture">
+          <datalist id="type-list"></datalist>
+        </div>
+        <div class="form-group half">
+          <label class="form-label">Category</label>
+          <input class="form-input" id="f-cat" type="text" list="cat-list" placeholder="e.g. Vase, Lamp, Cushion">
+          <datalist id="cat-list"></datalist>
+        </div>
+        <div class="form-group half">
+          <label class="form-label">Sub Class</label>
+          <input class="form-input" id="f-subclass" type="text" list="subclass-list" placeholder="e.g. Ceramic, Metal, Fabric">
+          <datalist id="subclass-list"></datalist>
+        </div>
+        <div class="form-group half">
+          <label class="form-label">Brand / Supplier</label>
+          <input class="form-input" id="f-brand" type="text" list="brand-list" placeholder="e.g. Artcraft, HomeStyle">
+          <datalist id="brand-list"></datalist>
+        </div>
+        <div class="form-group half">
+          <label class="form-label">Material</label>
+          <input class="form-input" id="f-material" type="text" placeholder="e.g. Ceramic, Wood, Glass">
+        </div>
 
+        <!-- Appearance -->
         <div class="form-section-label">🎨 Appearance</div>
         <div class="form-group half">
           <label class="form-label">Color</label>
@@ -236,16 +314,39 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
             <input class="form-input" id="f-color" type="text" placeholder="e.g. Blue, Red, #FF5733" oninput="syncColorPicker(this.value)">
           </div>
         </div>
-        <div class="form-group half"><label class="form-label">Size / Dimensions</label><input class="form-input" id="f-size" type="text" placeholder="e.g. 30x20x10 cm, Large"></div>
-        <div class="form-group half"><label class="form-label">Weight</label><input class="form-input" id="f-weight" type="text" placeholder="e.g. 500g, 1.2 kg"></div>
+        <div class="form-group half">
+          <label class="form-label">Size / Dimensions</label>
+          <input class="form-input" id="f-size" type="text" placeholder="e.g. 30x20x10 cm, Large">
+        </div>
+        <div class="form-group half">
+          <label class="form-label">Weight</label>
+          <input class="form-input" id="f-weight" type="text" placeholder="e.g. 500g, 1.2 kg">
+        </div>
 
+        <!-- Stock -->
         <div class="form-section-label">📊 Stock & Pricing</div>
-        <div class="form-group half"><label class="form-label">Rack Location *</label><select class="form-input" id="f-rack"></select></div>
-        <div class="form-group half"><label class="form-label">Quantity</label><input class="form-input" id="f-qty" type="number" value="1" min="0"></div>
-        <div class="form-group half"><label class="form-label">Purchase Price (₹)</label><input class="form-input" id="f-cost" type="number" value="0" min="0"></div>
-        <div class="form-group half"><label class="form-label">Selling Price (₹)</label><input class="form-input" id="f-price" type="number" value="0" min="0"></div>
-        <div class="form-group full"><label class="form-label">Notes</label><textarea class="form-input" id="f-notes" placeholder="Any extra information (fragile, handle with care, etc.)"></textarea></div>
+        <div class="form-group half">
+          <label class="form-label">Rack Location *</label>
+          <select class="form-input" id="f-rack"></select>
+        </div>
+        <div class="form-group half">
+          <label class="form-label">Quantity</label>
+          <input class="form-input" id="f-qty" type="number" value="1" min="0">
+        </div>
+        <div class="form-group half">
+          <label class="form-label">Purchase Price (₹)</label>
+          <input class="form-input" id="f-cost" type="number" value="0" min="0">
+        </div>
+        <div class="form-group half">
+          <label class="form-label">Selling Price (₹)</label>
+          <input class="form-input" id="f-price" type="number" value="0" min="0">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Notes</label>
+          <textarea class="form-input" id="f-notes" placeholder="Any extra information (fragile, handle with care, etc.)"></textarea>
+        </div>
 
+        <!-- Image -->
         <div class="form-section-label">🖼 Product Image</div>
         <div class="form-group full">
           <div class="img-zone" id="add-zone"
@@ -264,7 +365,8 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
             <input class="form-input" id="f-img-url" type="url" placeholder="https://example.com/product.jpg" style="font-size:12px;padding:7px 11px" oninput="handleUrl(this.value,'add-preview','add-img')">
           </div>
         </div>
-      </div>
+
+      </div><!-- end form-grid -->
       <div class="form-actions">
         <button class="btn btn-gold" onclick="addItem()">Add Item</button>
         <button class="btn btn-ghost" onclick="clearForm()">Clear All</button>
@@ -272,7 +374,7 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
     </div>
   </div>
 
-  <!-- SEARCH -->
+  <!-- ── SEARCH ── -->
   <div class="panel" id="panel-search">
     <div class="search-row">
       <div class="search-wrap">
@@ -293,7 +395,16 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
         <table>
           <thead><tr>
             <th style="width:70px">Image</th>
-            <th>Item Name</th><th>SKU</th><th>Type</th><th>Category</th><th>Sub Class</th><th>Color</th><th>Rack</th><th>Qty</th><th>Price (₹)</th><th>Actions</th>
+            <th>Item Name</th>
+            <th>SKU</th>
+            <th>Type</th>
+            <th>Category</th>
+            <th>Sub Class</th>
+            <th>Color</th>
+            <th>Rack</th>
+            <th>Qty</th>
+            <th>Price (₹)</th>
+            <th>Actions</th>
           </tr></thead>
           <tbody id="search-body">
             <tr><td colspan="11"><div class="empty"><div class="empty-icon">⌕</div><div class="empty-text">Start typing to search</div></div></td></tr>
@@ -303,7 +414,7 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
     </div>
   </div>
 
-  <!-- RACK VIEW -->
+  <!-- ── RACK VIEW ── -->
   <div class="panel" id="panel-racks">
     <div id="rack-list-view">
       <div class="card">
@@ -325,7 +436,15 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
           <table>
             <thead><tr>
               <th style="width:70px">Image</th>
-              <th>Item Name</th><th>SKU</th><th>Type</th><th>Category</th><th>Sub Class</th><th>Color</th><th>Qty</th><th>Price (₹)</th><th>Actions</th>
+              <th>Item Name</th>
+              <th>SKU</th>
+              <th>Type</th>
+              <th>Category</th>
+              <th>Sub Class</th>
+              <th>Color</th>
+              <th>Qty</th>
+              <th>Price (₹)</th>
+              <th>Actions</th>
             </tr></thead>
             <tbody id="rack-detail-body"></tbody>
           </table>
@@ -334,7 +453,7 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
     </div>
   </div>
 
-  <!-- MANAGE -->
+  <!-- ── MANAGE ── -->
   <div class="panel" id="panel-manage">
     <div class="card">
       <div class="card-title">Add New Rack</div>
@@ -366,7 +485,17 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
         <table>
           <thead><tr>
             <th style="width:70px">Image</th>
-            <th>Item Name</th><th>SKU</th><th>Type</th><th>Category</th><th>Sub Class</th><th>Brand</th><th>Color</th><th>Rack</th><th>Qty</th><th>Price (₹)</th><th>Actions</th>
+            <th>Item Name</th>
+            <th>SKU</th>
+            <th>Type</th>
+            <th>Category</th>
+            <th>Sub Class</th>
+            <th>Brand</th>
+            <th>Color</th>
+            <th>Rack</th>
+            <th>Qty</th>
+            <th>Price (₹)</th>
+            <th>Actions</th>
           </tr></thead>
           <tbody id="manage-body"></tbody>
         </table>
@@ -374,7 +503,7 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
     </div>
   </div>
 
-  <!-- SETUP -->
+  <!-- ── SETUP ── -->
   <div class="panel" id="panel-setup">
     <div class="card">
       <div class="card-header">
@@ -411,9 +540,68 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
     </div>
   </div>
 
+  <!-- ── MOVEMENT LOG ── -->
+  <div class="panel" id="panel-movements">
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">Movement Log</div><div class="card-subtitle">All Warehouse → Showroom moves and Sales</div></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-green btn-sm" onclick="exportMovLog()">⬇ Export Log CSV</button>
+          <button class="btn btn-ghost btn-sm" onclick="pushMovLogToGS()">📊 Push to Google Sheets</button>
+        </div>
+      </div>
+      <!-- Summary cards -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:18px">
+        <div class="card" style="margin:0;padding:14px;text-align:center">
+          <div style="font-family:var(--mono);font-size:28px;color:var(--purple)" id="ml-moves">0</div>
+          <div style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-top:4px">Moved to Showroom</div>
+        </div>
+        <div class="card" style="margin:0;padding:14px;text-align:center">
+          <div style="font-family:var(--mono);font-size:28px;color:var(--orange)" id="ml-sales">0</div>
+          <div style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-top:4px">Sales</div>
+        </div>
+        <div class="card" style="margin:0;padding:14px;text-align:center">
+          <div style="font-family:var(--mono);font-size:28px;color:var(--green)" id="ml-revenue">₹0</div>
+          <div style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-top:4px">Total Revenue</div>
+        </div>
+        <div class="card" style="margin:0;padding:14px;text-align:center">
+          <div style="font-family:var(--mono);font-size:28px;color:var(--gold)" id="ml-total">0</div>
+          <div style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-top:4px">Total Events</div>
+        </div>
+      </div>
+      <!-- Filter -->
+      <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+        <select class="form-input" id="ml-filter" style="width:180px" onchange="renderMovLog()">
+          <option value="">All Types</option>
+          <option value="moved">Moved to Showroom</option>
+          <option value="sold">Sold</option>
+        </select>
+        <input class="form-input" id="ml-search" type="text" placeholder="Search item name..." style="flex:1;min-width:180px" oninput="renderMovLog()">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Date & Time</th>
+            <th>Item Name</th>
+            <th>SKU</th>
+            <th>Type</th>
+            <th>Action</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Qty</th>
+            <th>Sale Price (₹)</th>
+            <th>Moved By</th>
+            <th>Notes</th>
+          </tr></thead>
+          <tbody id="mov-log-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
 </main>
 
-<!-- EDIT MODAL -->
+<!-- ── EDIT MODAL ── -->
 <div class="overlay" id="edit-overlay">
   <div class="modal">
     <div class="modal-title">Edit Item</div>
@@ -474,26 +662,66 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
   </div>
 </div>
 
-<!-- MOVE MODAL -->
+<!-- ── MOVE / SALE MODAL ── -->
 <div class="overlay" id="move-overlay">
-  <div class="modal" style="max-width:400px">
-    <div class="modal-title">Move Item to Another Rack</div>
+  <div class="modal" style="max-width:500px">
+    <div class="modal-title" id="move-modal-title">Move / Sell Item</div>
     <div class="form-group" style="margin-bottom:14px">
       <label class="form-label">Item</label>
       <input class="form-input" id="move-display" readonly>
     </div>
-    <div class="form-group">
-      <label class="form-label">Select New Rack</label>
+    <!-- Action type -->
+    <div class="form-group" style="margin-bottom:14px">
+      <label class="form-label">Action Type</label>
+      <div style="display:flex;gap:10px;margin-top:4px">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px">
+          <input type="radio" name="move-action" value="warehouse" checked onchange="onActionChange()"> Move within Warehouse
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px">
+          <input type="radio" name="move-action" value="showroom" onchange="onActionChange()"> Send to Showroom
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px">
+          <input type="radio" name="move-action" value="sold" onchange="onActionChange()"> Mark as Sold
+        </label>
+      </div>
+    </div>
+    <!-- Rack select (hidden when sold) -->
+    <div class="form-group" id="move-rack-grp" style="margin-bottom:14px">
+      <label class="form-label">Select Destination Rack / Location</label>
       <select class="form-input" id="move-rack"></select>
+    </div>
+    <!-- Showroom name (shown when showroom) -->
+    <div class="form-group" id="move-showroom-grp" style="margin-bottom:14px;display:none">
+      <label class="form-label">Showroom Name / Location</label>
+      <input class="form-input" id="move-showroom-name" type="text" placeholder="e.g. Main Showroom, Delhi Showroom">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div class="form-group">
+        <label class="form-label">Quantity</label>
+        <input class="form-input" id="move-qty" type="number" value="1" min="1">
+      </div>
+      <!-- Sale price (shown when sold) -->
+      <div class="form-group" id="move-price-grp" style="display:none">
+        <label class="form-label">Sale Price (₹)</label>
+        <input class="form-input" id="move-sale-price" type="number" value="0" min="0">
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:14px">
+      <label class="form-label">Moved / Sold By (Name) *</label>
+      <input class="form-input" id="move-by" type="text" placeholder="Enter your name">
+    </div>
+    <div class="form-group" style="margin-bottom:14px">
+      <label class="form-label">Notes</label>
+      <input class="form-input" id="move-notes" type="text" placeholder="Optional notes">
     </div>
     <div class="modal-actions">
       <button class="btn btn-ghost btn-sm" onclick="closeModal('move-overlay')">Cancel</button>
-      <button class="btn btn-gold btn-sm" onclick="confirmMove()">Move Item</button>
+      <button class="btn btn-gold btn-sm" id="move-confirm-btn" onclick="confirmMove()">Confirm</button>
     </div>
   </div>
 </div>
 
-<!-- LIGHTBOX -->
+<!-- ── LIGHTBOX ── -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lb-close" onclick="closeLightbox()">✕</button>
   <img id="lb-img" src="" alt="Product Image">
@@ -501,22 +729,20 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
 
 <script>
 /* ── STATE ── */
-// Google Sheets connected ho toh wahan se data aayega
-// Local mode mein sample data dikhega
-let items = [];
+let items = [
+  {id:'i1',name:'Ceramic Vase Blue',sku:'SKU-001',barcode:'8901000000001',type:'Home Decor',cat:'Vase',subclass:'Ceramic',brand:'ArtCraft',material:'Ceramic',color:'Blue',size:'30×15 cm',weight:'500g',rack:'Rack-A1',qty:5,cost:800,price:1200,notes:'Handle with care',image:'https://images.unsplash.com/photo-1578500494198-246f612d3b3d?w=200&q=80',added:'2025-01-10'},
+  {id:'i2',name:'Wooden Photo Frame 8x10',sku:'SKU-002',barcode:'8901000000002',type:'Home Decor',cat:'Frame',subclass:'Wood',brand:'WoodWorks',material:'Teak Wood',color:'Brown',size:'25×20 cm',weight:'300g',rack:'Rack-A2',qty:12,cost:300,price:450,notes:'',image:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&q=80',added:'2025-01-11'},
+  {id:'i3',name:'Fairy Light Set Warm',sku:'SKU-003',barcode:'',type:'Lighting',cat:'Fairy Lights',subclass:'LED',brand:'GlowCo',material:'Copper Wire',color:'Warm White',size:'10m',weight:'200g',rack:'Rack-B1',qty:8,cost:200,price:320,notes:'Keep in original box',image:'https://images.unsplash.com/photo-1545127398-14699f92334b?w=200&q=80',added:'2025-01-12'},
+  {id:'i4',name:'Cushion Cover Pink 16"',sku:'SKU-004',barcode:'',type:'Soft Furnishing',cat:'Cushion',subclass:'Fabric',brand:'HomeStyle',material:'Cotton',color:'Pink',size:'16×16 inch',weight:'150g',rack:'Rack-A1',qty:20,cost:120,price:180,notes:'',image:'https://images.unsplash.com/photo-1588556982819-1e9ba2b72a16?w=200&q=80',added:'2025-01-13'},
+  {id:'i5',name:'Table Lamp Beige',sku:'SKU-005',barcode:'8901000000005',type:'Lighting',cat:'Lamp',subclass:'Table Lamp',brand:'LightHouse',material:'Metal + Fabric',color:'Beige',size:'45 cm height',weight:'1.2 kg',rack:'Rack-B2',qty:3,cost:1500,price:2200,notes:'Fragile — pack separately',image:'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=200&q=80',added:'2025-01-14'},
+  {id:'i6',name:'Wall Clock Minimalist',sku:'SKU-006',barcode:'',type:'Home Decor',cat:'Clock',subclass:'Wall Decor',brand:'TimeCraft',material:'MDF + Glass',color:'Black',size:'30 cm diameter',weight:'400g',rack:'Section-C',qty:6,cost:600,price:890,notes:'',image:'https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=200&q=80',added:'2025-01-15'},
+];
 let racks = ['Rack-A1','Rack-A2','Rack-B1','Rack-B2','Section-C','Zone-D'];
-let nextId = 1;
-
+let nextId = 7;
 let moveTarget = null;
 let currentRack = null;
 let filteredItems = [...items];
 let gsUrl = localStorage.getItem('ws_gs_url') || '';
-
-/* ── SAFE ID GENERATOR ── */
-// ✅ FIX 3: IDs generate karne ka safe tarika — koi conflict nahi hoga
-function genId() {
-  return 'item_' + (nextId++);
-}
 
 /* ── INIT ── */
 function init() {
@@ -535,12 +761,13 @@ function refreshAll() {
 function switchTab(tab) {
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  const tabs=['add','search','racks','manage','setup'];
+  const tabs=['add','search','racks','manage','movements','setup'];
   document.querySelectorAll('.tab')[tabs.indexOf(tab)].classList.add('active');
   document.getElementById('panel-'+tab).classList.add('active');
-  if(tab==='racks')  renderRacks();
-  if(tab==='manage') renderManage();
-  if(tab==='search') doSearch();
+  if(tab==='racks')     renderRacks();
+  if(tab==='manage')    renderManage();
+  if(tab==='search')    doSearch();
+  if(tab==='movements') renderMovLog();
   refreshDropdowns();
   updateConnStatus();
 }
@@ -600,7 +827,7 @@ function addItem() {
   if(!name) { showAlert(al,'Item name is required.','error'); return; }
   if(!rack) { showAlert(al,'Please select a rack location.','error'); return; }
   const item = {
-    id:       genId(),   // ✅ Safe ID use karo
+    id:       'i'+(nextId++),
     name,
     sku:      v('f-sku').trim(),
     barcode:  v('f-barcode').trim(),
@@ -652,19 +879,11 @@ function doSearch() {
   renderTable(filteredItems,'search-body',true);
 }
 
-/* ── RENDER TABLE ──
-   ✅ FIX 4 (MAIN FIX): onclick handlers mein inline string IDs ki jagah
-   data-attribute + event delegation use karo — quote conflict ZERO hoga
-*/
+/* ── RENDER TABLE ── */
 function imgCell(item) {
-  if(item.image) {
-    // ✅ data-src attribute use karo — image URL ko onclick mein escape karne ki zarurat nahi
-    return `<img class="img-thumb" src="${item.image}" alt="${esc(item.name)}"
-              data-src="${item.image.replace(/"/g,'&quot;')}"
-              data-action="lightbox"
-              onerror="this.style.display='none'">`; 
-  }
-  return `<div class="img-placeholder" data-id="${item.id}" data-action="edit" title="Click Edit to add image">+</div>`;
+  return item.image
+    ? `<img class="img-thumb" src="${item.image}" alt="${esc(item.name)}" onclick="openLightbox('${item.image.replace(/'/g,"\\'")}')" onerror="this.outerHTML='<div class=img-placeholder onclick=openEdit(\'${item.id}\')>+</div>'">`
+    : `<div class="img-placeholder" onclick="openEdit('${item.id}')" title="Click Edit to add image">+</div>`;
 }
 
 function colorCell(item) {
@@ -683,7 +902,6 @@ function renderTable(data, tbodyId, showRack=false) {
     tbody.innerHTML=`<tr><td colspan="${cols}"><div class="empty"><div class="empty-icon">📦</div><div class="empty-text">No items found</div></div></td></tr>`;
     return;
   }
-  // ✅ data-id attribute use karo har action button mein — koi inline string nahi
   tbody.innerHTML = data.map(item=>`
     <tr>
       <td>${imgCell(item)}</td>
@@ -704,28 +922,12 @@ function renderTable(data, tbodyId, showRack=false) {
       <td><span class="cell-mono">${item.price?'₹'+item.price.toLocaleString('en-IN'):'—'}</span></td>
       <td>
         <div class="cell-actions">
-          <button class="btn btn-blue btn-xs" data-id="${item.id}" data-action="move">Move</button>
-          <button class="btn btn-ghost btn-xs" data-id="${item.id}" data-action="edit">Edit</button>
-          ${tbodyId==='manage-body'?`<button class="btn btn-red btn-xs" data-id="${item.id}" data-action="delete">Delete</button>`:''}
+          <button class="btn btn-blue btn-xs" onclick="openMove('${item.id}')">Move</button>
+          <button class="btn btn-ghost btn-xs" onclick="openEdit('${item.id}')">Edit</button>
         </div>
       </td>
     </tr>`).join('');
 }
-
-/* ── EVENT DELEGATION — table clicks sab yahan handle honge ── */
-// ✅ FIX 5: Ek central click handler — koi inline onclick string nahi
-document.addEventListener('click', function(e) {
-  const btn = e.target.closest('[data-action]');
-  if(!btn) return;
-  const action = btn.dataset.action;
-  const id     = btn.dataset.id;
-  const src    = btn.dataset.src;
-
-  if(action === 'lightbox') openLightbox(src || btn.src);
-  if(action === 'edit')     openEdit(id);
-  if(action === 'move')     openMove(id);
-  if(action === 'delete')   deleteItem(id);
-});
 
 /* ── RACKS ── */
 function renderRacks() {
@@ -735,19 +937,13 @@ function renderRacks() {
     const rI = items.filter(i=>i.rack===rack);
     const prev = rI.slice(0,3).map(i=>`<div class="rack-tag-item">${esc(i.name)}</div>`).join('');
     const more = rI.length>3?`<div class="rack-tag-item">+${rI.length-3} more</div>`:'';
-    // ✅ data-rack attribute use karo
-    return `<div class="rack-card" data-rack="${esc(rack)}">
+    return `<div class="rack-card" onclick="openRackDetail('${rack}')">
       <div class="rack-name">${esc(rack)}</div>
       <div class="rack-count">${rI.length}</div>
       <div class="rack-label">Items</div>
       <div class="rack-preview">${prev}${more}</div>
     </div>`;
   }).join('');
-
-  // Rack cards click
-  document.querySelectorAll('.rack-card[data-rack]').forEach(card => {
-    card.addEventListener('click', () => openRackDetail(card.dataset.rack));
-  });
 }
 
 function openRackDetail(rack) {
@@ -771,13 +967,8 @@ function closeRackDetail() {
 function renderManage() {
   const tagsEl = document.getElementById('rack-tags');
   tagsEl.innerHTML = racks.length
-    ? racks.map(r=>`<div class="rtag">${esc(r)}<button class="rtag-del" data-rack="${esc(r)}">×</button></div>`).join('')
+    ? racks.map(r=>`<div class="rtag">${esc(r)}<button class="rtag-del" onclick="deleteRack('${r}')">×</button></div>`).join('')
     : `<span style="color:var(--text2);font-size:13px">No racks yet</span>`;
-
-  // ✅ Rack delete buttons — event delegation via data-rack
-  document.querySelectorAll('.rtag-del[data-rack]').forEach(btn => {
-    btn.addEventListener('click', () => deleteRack(btn.dataset.rack));
-  });
 
   const tbody = document.getElementById('manage-body');
   if(!items.length) { tbody.innerHTML=`<tr><td colspan="12"><div class="empty"><div class="empty-icon">📦</div><div class="empty-text">No items yet</div></div></td></tr>`; return; }
@@ -796,9 +987,9 @@ function renderManage() {
       <td><span class="cell-mono">${item.price?'₹'+item.price.toLocaleString('en-IN'):'—'}</span></td>
       <td>
         <div class="cell-actions">
-          <button class="btn btn-blue btn-xs" data-id="${item.id}" data-action="move">Move</button>
-          <button class="btn btn-ghost btn-xs" data-id="${item.id}" data-action="edit">Edit</button>
-          <button class="btn btn-red btn-xs" data-id="${item.id}" data-action="delete">Delete</button>
+          <button class="btn btn-blue btn-xs" onclick="openMove('${item.id}')">Move</button>
+          <button class="btn btn-ghost btn-xs" onclick="openEdit('${item.id}')">Edit</button>
+          <button class="btn btn-red btn-xs" onclick="deleteItem('${item.id}')">Delete</button>
         </div>
       </td>
     </tr>`).join('');
@@ -813,37 +1004,104 @@ function addRack() {
   document.getElementById('new-rack-name').value='';
   showAlert(al,`✓ Rack "${name}" added.`,'success');
   refreshAll();
-  renderManage();
   if(gsUrl) pushToGS('addRack',{name});
 }
 
 function deleteRack(rack) {
   if(items.some(i=>i.rack===rack)){alert(`Cannot delete "${rack}" — it contains items. Move them first.`);return;}
   if(!confirm(`Delete rack "${rack}"?`)) return;
-  racks=racks.filter(r=>r!==rack); refreshAll(); renderManage();
+  racks=racks.filter(r=>r!==rack); refreshAll();
 }
 
 function deleteItem(id) {
   if(!confirm('Delete this item permanently?')) return;
-  items=items.filter(i=>i.id!==id); refreshAll(); renderManage();
+  items=items.filter(i=>i.id!==id); refreshAll();
   if(gsUrl) pushToGS('deleteItem',{id});
 }
 
-/* ── MOVE ── */
+/* ── MOVE / SELL ── */
 function openMove(id) {
   moveTarget=id;
-  const item=items.find(i=>i.id===id); if(!item) return;
-  document.getElementById('move-display').value=`${item.name}  (currently in: ${item.rack})`;
+  const item=items.find(i=>i.id===id);
+  document.getElementById('move-display').value=`${item.name}  (${esc(item.sku)||''})  — Current Location: ${item.rack}`;
+  document.getElementById('move-qty').value=1;
+  document.getElementById('move-by').value=localStorage.getItem('last_moved_by')||'';
+  document.getElementById('move-notes').value='';
+  document.getElementById('move-sale-price').value=item.price||0;
+  document.getElementById('move-showroom-name').value='';
+  document.querySelector('input[name="move-action"][value="warehouse"]').checked=true;
+  onActionChange();
   refreshDropdowns();
   document.getElementById('move-rack').value=item.rack;
   openModal('move-overlay');
 }
+
+function onActionChange(){
+  const action=document.querySelector('input[name="move-action"]:checked').value;
+  const rGrp=document.getElementById('move-rack-grp');
+  const sGrp=document.getElementById('move-showroom-grp');
+  const pGrp=document.getElementById('move-price-grp');
+  const btn =document.getElementById('move-confirm-btn');
+  if(action==='sold'){
+    rGrp.style.display='none'; sGrp.style.display='none'; pGrp.style.display='';
+    btn.textContent='Mark as Sold'; btn.className='btn btn-red btn-sm';
+  } else if(action==='showroom'){
+    rGrp.style.display='none'; sGrp.style.display=''; pGrp.style.display='none';
+    btn.textContent='Send to Showroom'; btn.className='btn btn-purple btn-sm';
+  } else {
+    rGrp.style.display=''; sGrp.style.display='none'; pGrp.style.display='none';
+    btn.textContent='Move Item'; btn.className='btn btn-gold btn-sm';
+  }
+}
+
 function confirmMove() {
-  const newRack=v('move-rack');
-  const item=items.find(i=>i.id===moveTarget);
-  if(item) { item.rack=newRack; }
+  const action  = document.querySelector('input[name="move-action"]:checked').value;
+  const movedBy = v('move-by').trim();
+  const qty     = parseInt(v('move-qty'))||1;
+  const notes   = v('move-notes').trim();
+  if(!movedBy){alert('Please enter who is moving/selling this item.');return;}
+  const item = items.find(i=>i.id===moveTarget); if(!item) return;
+  localStorage.setItem('last_moved_by', movedBy);
+
+  const now = new Date();
+  const dateStr = now.toLocaleString('en-IN',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  let logEntry = {
+    id:       'ml'+Date.now(),
+    datetime: dateStr,
+    itemId:   item.id,
+    itemName: item.name,
+    sku:      item.sku||'',
+    type:     item.type||'',
+    action,
+    from:     item.rack,
+    to:       '',
+    qty,
+    salePrice:0,
+    movedBy,
+    notes,
+    addedOn:  now.toISOString().slice(0,10)
+  };
+
+  if(action==='sold'){
+    logEntry.to='SOLD';
+    logEntry.salePrice=parseFloat(v('move-sale-price'))||0;
+    item.qty=Math.max(0,item.qty-qty);
+    if(item.qty===0) item.rack='[Sold Out]';
+  } else if(action==='showroom'){
+    const sname=v('move-showroom-name').trim()||'Showroom';
+    logEntry.to=sname;
+    item.qty=Math.max(0,item.qty-qty);
+    if(!racks.includes(sname)) racks.push(sname);
+    if(item.qty===0) item.rack=sname; else item.rack=sname;
+  } else {
+    const newRack=v('move-rack');
+    logEntry.to=newRack;
+    item.rack=newRack;
+  }
+
+  movementLog.unshift(logEntry);
   closeModal('move-overlay'); refreshAll();
-  if(gsUrl) pushToGS('updateItem',item);
+  if(gsUrl){pushToGS('updateItem',item); pushToGS('addMovement',logEntry);}
 }
 
 /* ── EDIT ── */
@@ -867,7 +1125,9 @@ function openEdit(id) {
   document.getElementById('edit-notes').value    = item.notes||'';
   document.getElementById('edit-img').value      = item.image||'';
   document.getElementById('edit-img-url').value  = '';
+  // Color picker
   if(item.color && item.color.startsWith('#')) document.getElementById('edit-color-picker').value=item.color;
+  // Image preview
   const prev=document.getElementById('edit-preview');
   if(item.image) { prev.style.display='block'; prev.innerHTML=buildPreview(item.image,item.name); }
   else { prev.style.display='none'; prev.innerHTML=''; }
@@ -932,7 +1192,7 @@ function handleUrl(url, previewId, dataId) {
 
 function buildPreview(src, name) {
   return `<div class="img-preview-wrap">
-    <img src="${src}" alt="${esc(name)}" onerror="this.parentElement.innerHTML='<span style=color:var(--red);font-size:12px>Could not load image</span>'">
+    <img src="${src}" alt="${esc(name)}" onerror="this.src='';this.parentElement.innerHTML='<span style=color:var(--red);font-size:12px>Could not load image</span>'">
     <div class="img-preview-info">
       <div class="img-preview-name">${esc(name)}</div>
       <div style="margin-top:4px">Image ready to save</div>
@@ -952,7 +1212,7 @@ function clearPreview(btn) {
 /* ── LIGHTBOX ── */
 function openLightbox(src) { document.getElementById('lb-img').src=src; document.getElementById('lightbox').classList.add('open'); }
 function closeLightbox()   { document.getElementById('lightbox').classList.remove('open'); }
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLightbox();document.querySelectorAll('.overlay.open').forEach(o=>o.classList.remove('open'));}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
 
 /* ── CSV ── */
 const CSV_HEADERS = ['ID','Name','SKU','Barcode','Product Type','Category','Sub Class','Brand','Material','Color','Size','Weight','Rack','Qty','Cost','Price','Notes','Image URL','Added On'];
@@ -978,44 +1238,12 @@ function importCSV(event) {
       const c=parseCSVLine(lines[i]); if(!c[1]) continue;
       const rack=c[12]||racks[0]||'Rack-A1';
       if(!racks.includes(rack)) racks.push(rack);
-      imported.push({id:c[0]||genId(),name:c[1]||'',sku:c[2]||'',barcode:c[3]||'',type:c[4]||'',cat:c[5]||'',subclass:c[6]||'',brand:c[7]||'',material:c[8]||'',color:c[9]||'',size:c[10]||'',weight:c[11]||'',rack,qty:parseInt(c[13])||0,cost:parseFloat(c[14])||0,price:parseFloat(c[15])||0,notes:c[16]||'',image:c[17]||'',added:c[18]||today()});
+      imported.push({id:c[0]||'i'+(nextId++),name:c[1]||'',sku:c[2]||'',barcode:c[3]||'',type:c[4]||'',cat:c[5]||'',subclass:c[6]||'',brand:c[7]||'',material:c[8]||'',color:c[9]||'',size:c[10]||'',weight:c[11]||'',rack,qty:parseInt(c[13])||0,cost:parseFloat(c[14])||0,price:parseFloat(c[15])||0,notes:c[16]||'',image:c[17]||'',added:c[18]||today()});
     }
     const replace=confirm(`Found ${imported.length} items.\n\nOK = Replace existing data\nCancel = Add to existing data`);
     if(replace){items=imported;}else{items=[...items,...imported];}
-    const maxNum = Math.max(...items.map(i => parseInt(i.id.replace(/\D/g,''))||0), 0);
-    nextId = maxNum + 1;
-    refreshAll();
-
-    // ✅ FIX: CSV import ke baad Google Sheets mein bhi sync karo
-    if(gsUrl) {
-      const toSync = replace ? imported : imported; // sirf naye items push karo
-      showLoading(true);
-      // Ek ek item push karo GS mein
-      let done = 0;
-      const action = replace ? 'replaceAll' : 'addItem';
-
-      if(replace) {
-        // Pura data replace karo
-        fetch(gsUrl, {
-          method: 'POST',
-          body: JSON.stringify({ action: 'replaceAll', items: items, racks: racks })
-        })
-        .then(r => r.json())
-        .then(() => { showLoading(false); alert(`✓ ${imported.length} items imported aur Google Sheets mein save ho gaye!`); })
-        .catch(() => { showLoading(false); alert(`✓ ${imported.length} items imported (local). Google Sheets sync failed — manually check karein.`); });
-      } else {
-        // Sirf naye items add karo one by one
-        function pushNext(i) {
-          if(i >= imported.length) { showLoading(false); alert(`✓ ${imported.length} items imported aur Google Sheets mein save ho gaye!`); return; }
-          fetch(gsUrl, { method:'POST', body: JSON.stringify({action:'addItem', ...imported[i]}) })
-            .then(() => pushNext(i+1))
-            .catch(() => pushNext(i+1));
-        }
-        pushNext(0);
-      }
-    } else {
-      alert(`✓ ${imported.length} items imported.`);
-    }
+    nextId=Math.max(...items.map(i=>parseInt(i.id.replace(/\D/g,''))||0))+1;
+    refreshAll(); alert(`✓ ${imported.length} items imported.`);
   };
   reader.readAsText(file,'UTF-8'); event.target.value='';
 }
@@ -1043,29 +1271,7 @@ function updateConnStatus() {
 function saveConn(){const url=v('gs-url').trim();const al=document.getElementById('alert-setup');if(!url){showAlert(al,'Enter the Web App URL.','error');return;}gsUrl=url;localStorage.setItem('ws_gs_url',gsUrl);updateConnStatus();fetchFromGS();}
 function clearConn(){gsUrl='';localStorage.removeItem('ws_gs_url');document.getElementById('gs-url').value='';updateConnStatus();}
 function testConn(){const url=v('gs-url').trim();const al=document.getElementById('alert-setup');if(!url){showAlert(al,'Enter the URL first.','error');return;}showAlert(al,'Testing...','info');fetch(`${url}?action=ping`).then(r=>r.json()).then(d=>showAlert(al,d.status==='ok'?'✓ Connection successful!':'Unexpected response.','success')).catch(()=>showAlert(al,'Connection failed. Check URL and deployment.','error'));}
-function fetchFromGS(){
-  if(!gsUrl) return;
-  showLoading(true);
-  fetch(`${gsUrl}?action=getAll`)
-    .then(r => r.json())
-    .then(d => {
-      if(d.items && d.items.length >= 0) items = d.items;
-      if(d.racks && d.racks.length > 0)  racks = d.racks;
-      // nextId update karo
-      if(items.length > 0) {
-        const maxNum = Math.max(...items.map(i => parseInt((i.id||'').replace(/\D/g,''))||0), 0);
-        nextId = maxNum + 1;
-      }
-      refreshAll();
-      showLoading(false);
-      updateConnStatus();
-    })
-    .catch(err => {
-      showLoading(false);
-      console.error('GS fetch error:', err);
-      // Connection fail hone par local data rakh lo
-    });
-}
+function fetchFromGS(){if(!gsUrl)return;showLoading(true);fetch(`${gsUrl}?action=getAll`).then(r=>r.json()).then(d=>{if(d.items)items=d.items;if(d.racks)racks=d.racks;if(d.movements)movementLog=d.movements;refreshAll();showLoading(false);}).catch(()=>showLoading(false));}
 function pushToGS(action,data){if(!gsUrl)return;fetch(gsUrl,{method:'POST',body:JSON.stringify({action,...data})});}
 
 /* ── HELPERS ── */
@@ -1077,7 +1283,71 @@ function showLoading(b){document.getElementById('loading').classList.toggle('sho
 function showAlert(el,msg,type){el.textContent=msg;el.className=`alert show alert-${type}`;clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),4000);}
 document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
 
+/* ── THEME ── */
+function toggleTheme(){
+  const light=document.body.classList.toggle('light');
+  localStorage.setItem('ws_theme', light?'light':'dark');
+  document.getElementById('theme-btn').innerHTML=light?'☀️ Light':'🌙 Dark';
+}
+function initTheme(){
+  const t=localStorage.getItem('ws_theme');
+  if(t==='light'){document.body.classList.add('light');document.getElementById('theme-btn').innerHTML='☀️ Light';}
+}
+
+/* ── MOVEMENT LOG ── */
+let movementLog = [];
+
+function renderMovLog(){
+  const fType=v('ml-filter');
+  const fQ=v('ml-search').toLowerCase().trim();
+  let filtered=movementLog.filter(e=>{
+    const mT=!fType||e.action===fType;
+    const mQ=!fQ||e.itemName.toLowerCase().includes(fQ)||e.sku.toLowerCase().includes(fQ);
+    return mT&&mQ;
+  });
+  // Summary
+  const moves  = movementLog.filter(e=>e.action==='showroom').length;
+  const sales  = movementLog.filter(e=>e.action==='sold').length;
+  const rev    = movementLog.filter(e=>e.action==='sold').reduce((s,e)=>s+e.salePrice,0);
+  document.getElementById('ml-moves').textContent  = moves;
+  document.getElementById('ml-sales').textContent  = sales;
+  document.getElementById('ml-revenue').textContent= '₹'+rev.toLocaleString('en-IN');
+  document.getElementById('ml-total').textContent  = movementLog.length;
+
+  const tbody=document.getElementById('mov-log-body');
+  if(!filtered.length){tbody.innerHTML=`<tr><td colspan="11"><div class="empty"><div class="empty-icon">📋</div><div class="empty-text">No movements recorded yet</div></div></td></tr>`;return;}
+  tbody.innerHTML=filtered.map(e=>{
+    const actionBadge=e.action==='sold'?`<span class="badge badge-sold">Sold</span>`:e.action==='showroom'?`<span class="badge badge-showroom">→ Showroom</span>`:`<span class="badge badge-rack">Moved</span>`;
+    return `<tr class="${e.action==='sold'?'log-row-sale':e.action==='showroom'?'log-row-move':''}">
+      <td><span class="cell-mono" style="font-size:11px">${esc(e.datetime)}</span></td>
+      <td><div class="item-name" style="font-size:13px">${esc(e.itemName)}</div></td>
+      <td><span class="cell-mono">${esc(e.sku)||'—'}</span></td>
+      <td>${e.type?`<span class="badge badge-type">${esc(e.type)}</span>`:'—'}</td>
+      <td>${actionBadge}</td>
+      <td><span class="badge badge-rack">${esc(e.from)}</span></td>
+      <td><span class="badge ${e.action==='sold'?'badge-sold':e.action==='showroom'?'badge-showroom':'badge-rack'}">${esc(e.to)}</span></td>
+      <td><span class="badge badge-qty">${e.qty}</span></td>
+      <td><span class="cell-mono">${e.salePrice?'₹'+e.salePrice.toLocaleString('en-IN'):'—'}</span></td>
+      <td><strong>${esc(e.movedBy)}</strong></td>
+      <td style="font-size:12px;color:var(--text2)">${esc(e.notes)||'—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function exportMovLog(){
+  const hdrs=['Date Time','Item Name','SKU','Product Type','Action','From','To','Qty','Sale Price','Moved By','Notes'];
+  const rows=movementLog.map(e=>[q(e.datetime),q(e.itemName),q(e.sku),q(e.type),q(e.action),q(e.from),q(e.to),e.qty,e.salePrice,q(e.movedBy),q(e.notes)]);
+  dlCSV([hdrs.join(','),...rows.map(r=>r.join(','))].join('\n'),`movement_log_${today()}.csv`);
+}
+
+function pushMovLogToGS(){
+  if(!gsUrl){alert('Connect Google Sheets first in the Setup tab.');return;}
+  movementLog.forEach(e=>pushToGS('addMovement',e));
+  alert('Movement log pushed to Google Sheets!');
+}
+
 /* ── BOOT ── */
+initTheme();
 init();
 </script>
 </body>
