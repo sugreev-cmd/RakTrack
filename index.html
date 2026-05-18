@@ -14,20 +14,24 @@
   --radius:10px; --mono:'IBM Plex Mono',monospace; --body:'Outfit',sans-serif; --display:'Syne',sans-serif;
   --orange:#f07030;
 }
+/* ── Light Mode ── */
 body.light {
   --bg:#f4f5f8; --surf:#ffffff; --surf2:#eceef4; --surf3:#dde0ea;
   --border:#d0d4e0; --gold:#c07010; --gold2:#e09020;
   --blue:#2060e0; --green:#18a060; --red:#d03030; --purple:#7040d0;
-  --text:#1a1e2e; --text2:#506080; --text3:#8090b0;
+  --text:#1a1e2e; --text2:#5060808; --text2:#506080; --text3:#8090b0;
   --orange:#d06020;
 }
 body.light .rack-card:hover{box-shadow:0 12px 32px rgba(0,0,0,.15)}
 body.light tbody tr:hover td{background:rgba(0,0,0,.02)}
 body.light .lightbox{background:rgba(0,0,0,.85)}
+/* Theme toggle btn */
 .theme-btn{background:var(--surf2);border:1px solid var(--border);color:var(--text2);border-radius:20px;padding:5px 12px;font-size:13px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
 .theme-btn:hover{border-color:var(--gold);color:var(--gold)}
+/* Movement badge */
 .badge-sold{background:rgba(240,112,48,.12);color:var(--orange);border:1px solid rgba(240,112,48,.25)}
 .badge-showroom{background:rgba(144,96,240,.12);color:var(--purple);border:1px solid rgba(144,96,240,.25)}
+/* Movement log table */
 .log-row-sale td{background:rgba(240,112,48,.04)}
 .log-row-move td{background:rgba(144,96,240,.04)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -38,6 +42,8 @@ input,select,textarea{font-family:var(--body)}
 ::-webkit-scrollbar{width:6px;height:6px}
 ::-webkit-scrollbar-track{background:var(--surf)}
 ::-webkit-scrollbar-thumb{background:var(--surf3);border-radius:3px}
+
+/* Header */
 .header{background:var(--surf);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;gap:16px}
 .logo{font-family:var(--display);font-size:17px;font-weight:800;color:var(--gold);letter-spacing:1px;white-space:nowrap}
 .logo em{color:var(--text2);font-style:normal;font-weight:400}
@@ -46,6 +52,8 @@ input,select,textarea{font-family:var(--body)}
 .hstat-val{font-family:var(--mono);font-size:17px;font-weight:500;color:var(--gold);display:block}
 .hstat-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px}
 .header-actions{display:flex;gap:8px}
+
+/* Buttons */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius);border:none;font-size:13px;font-weight:600;transition:all .15s;white-space:nowrap;line-height:1}
 .btn-gold{background:var(--gold);color:#000}.btn-gold:hover{background:var(--gold2);transform:translateY(-1px)}
 .btn-green{background:var(--green);color:#000}.btn-green:hover{opacity:.85;transform:translateY(-1px)}
@@ -55,16 +63,24 @@ input,select,textarea{font-family:var(--body)}
 .btn-purple{background:var(--purple);color:#fff}.btn-purple:hover{opacity:.85}
 .btn-sm{padding:5px 11px;font-size:12px}.btn-xs{padding:3px 9px;font-size:11px}
 .btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
+
+/* Tabs */
 .tabs{background:var(--surf);border-bottom:1px solid var(--border);display:flex;padding:0 24px;gap:2px;overflow-x:auto}
 .tab{padding:14px 18px;font-size:13px;font-weight:500;color:var(--text2);border:none;background:none;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;cursor:pointer}
 .tab:hover{color:var(--text)}.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+
+/* Layout */
 .main{padding:24px;max-width:1300px;margin:0 auto}
 .panel{display:none;animation:fadeIn .2s ease}.panel.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* Card */
 .card{background:var(--surf);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:18px}
 .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap}
 .card-title{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--gold)}
 .card-subtitle{font-size:12px;color:var(--text2);margin-top:2px}
+
+/* Form */
 .form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
 .form-group{display:flex;flex-direction:column;gap:6px}
 .form-group.half{grid-column:span 1}
@@ -78,11 +94,15 @@ select.form-input option{background:var(--surf)}
 textarea.form-input{resize:vertical;min-height:70px}
 .form-section-label{grid-column:1/-1;font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:2px;border-bottom:1px solid var(--border);padding-bottom:8px;margin-top:6px}
 .form-actions{margin-top:18px;display:flex;gap:10px}
+
+/* Alert */
 .alert{padding:10px 14px;border-radius:var(--radius);font-size:13px;margin-bottom:14px;display:none}
 .alert.show{display:block}
 .alert-success{background:rgba(40,199,122,.12);border:1px solid rgba(40,199,122,.3);color:var(--green)}
 .alert-error{background:rgba(224,80,80,.12);border:1px solid rgba(224,80,80,.3);color:var(--red)}
 .alert-info{background:rgba(64,128,255,.12);border:1px solid rgba(64,128,255,.3);color:var(--blue)}
+
+/* Table */
 .table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border)}
 table{width:100%;border-collapse:collapse}
 thead th{background:var(--surf2);padding:10px 14px;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text2);text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
@@ -93,22 +113,32 @@ tbody tr:hover td{background:rgba(255,255,255,.02)}
 .item-meta{font-size:11px;color:var(--text2);margin-top:2px;display:flex;gap:6px;flex-wrap:wrap}
 .cell-mono{font-family:var(--mono);font-size:11px;color:var(--text2)}
 .cell-actions{display:flex;gap:5px;flex-wrap:wrap}
+
+/* Badge */
 .badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-family:var(--mono);font-size:10px;font-weight:500;white-space:nowrap}
 .badge-rack{background:rgba(232,160,32,.12);color:var(--gold);border:1px solid rgba(232,160,32,.25)}
 .badge-cat{background:rgba(64,128,255,.12);color:var(--blue);border:1px solid rgba(64,128,255,.25)}
 .badge-qty{background:rgba(40,199,122,.12);color:var(--green);border:1px solid rgba(40,199,122,.25)}
 .badge-type{background:rgba(144,96,240,.12);color:var(--purple);border:1px solid rgba(144,96,240,.25)}
 .badge-color{background:rgba(255,255,255,.06);color:var(--text2);border:1px solid var(--border)}
+
+/* Color dot */
 .color-dot{width:12px;height:12px;border-radius:50%;border:1px solid rgba(255,255,255,.2);display:inline-block;flex-shrink:0}
+
+/* Search */
 .search-row{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
 .search-wrap{position:relative;flex:1;min-width:200px}
 .search-wrap .form-input{padding-left:38px}
 .search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none}
 .filter-select{width:160px;flex-shrink:0}
+
+/* Image */
 .img-thumb{width:56px;height:56px;object-fit:cover;border-radius:8px;border:1px solid var(--border);cursor:pointer;transition:transform .15s,border-color .15s;display:block}
 .img-thumb:hover{transform:scale(1.1);border-color:var(--gold)}
 .img-placeholder{width:56px;height:56px;border-radius:8px;border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:20px;cursor:pointer;transition:all .15s}
 .img-placeholder:hover{border-color:var(--gold);color:var(--gold)}
+
+/* Image upload zone */
 .img-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:20px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:var(--bg)}
 .img-zone:hover,.img-zone.drag-over{border-color:var(--gold);background:rgba(232,160,32,.04)}
 .img-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
@@ -116,6 +146,8 @@ tbody tr:hover td{background:rgba(255,255,255,.02)}
 .img-preview-wrap img{width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);flex-shrink:0}
 .img-preview-info{flex:1;font-size:12px;color:var(--text2)}
 .img-preview-name{font-weight:600;color:var(--text);margin-bottom:3px;font-size:13px}
+
+/* Rack Grid */
 .rack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:14px}
 .rack-card{background:var(--surf);border:1px solid var(--border);border-radius:14px;padding:18px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
 .rack-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold2))}
@@ -125,30 +157,42 @@ tbody tr:hover td{background:rgba(255,255,255,.02)}
 .rack-label{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px}
 .rack-preview{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
 .rack-tag-item{font-size:10px;background:var(--surf2);border:1px solid var(--border);padding:2px 7px;border-radius:4px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:155px}
+
+/* Manage rack tags */
 .rack-tags{display:flex;flex-wrap:wrap;gap:10px}
 .rtag{display:inline-flex;align-items:center;gap:8px;background:var(--surf2);border:1px solid var(--border);border-radius:var(--radius);padding:7px 12px;font-family:var(--mono);font-size:12px;color:var(--gold)}
 .rtag-del{color:var(--text3);background:none;border:none;font-size:16px;line-height:1;cursor:pointer;padding:0}
 .rtag-del:hover{color:var(--red)}
+
+/* Modal */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;z-index:200;backdrop-filter:blur(4px)}
 .overlay.open{display:flex}
 .modal{background:var(--surf);border:1px solid var(--border);border-radius:16px;padding:26px;width:94%;max-width:680px;max-height:90vh;overflow-y:auto;animation:mIn .2s ease}
 @keyframes mIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
 .modal-title{font-family:var(--display);font-size:16px;font-weight:700;color:var(--gold);margin-bottom:18px}
 .modal-actions{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
+
+/* Lightbox */
 .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.93);display:none;align-items:center;justify-content:center;z-index:500;cursor:zoom-out}
 .lightbox.open{display:flex}
 .lightbox img{max-width:90vw;max-height:88vh;object-fit:contain;border-radius:12px;box-shadow:0 24px 80px rgba(0,0,0,.8);animation:lbIn .2s ease}
 .lb-close{position:absolute;top:20px;right:24px;background:rgba(255,255,255,.1);border:none;color:#fff;width:40px;height:40px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .lb-close:hover{background:rgba(255,255,255,.2)}
 @keyframes lbIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+
+/* Loading */
 .loading-overlay{position:fixed;inset:0;background:rgba(12,14,20,.88);display:none;align-items:center;justify-content:center;z-index:300;flex-direction:column;gap:14px;backdrop-filter:blur(4px)}
 .loading-overlay.show{display:flex}
 .spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* Conn badge */
 .conn-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:5px 11px;border-radius:20px;font-family:var(--mono)}
 .conn-badge.offline{background:rgba(224,80,80,.12);color:var(--red);border:1px solid rgba(224,80,80,.3)}
 .conn-badge.online{background:rgba(40,199,122,.12);color:var(--green);border:1px solid rgba(40,199,122,.3)}
 .conn-dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+
+/* Steps */
 .steps{display:flex;flex-direction:column}
 .step{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--border)}
 .step:last-child{border-bottom:none}
@@ -156,11 +200,16 @@ tbody tr:hover td{background:rgba(255,255,255,.02)}
 .step-title{font-weight:600;color:var(--text);margin-bottom:4px}
 .step-desc{font-size:13px;color:var(--text2);line-height:1.6}
 code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px solid var(--border);padding:1px 6px;border-radius:4px;color:var(--gold2)}
+
+/* Back btn */
 .back-btn{display:inline-flex;align-items:center;gap:7px;background:none;border:none;color:var(--text2);font-size:13px;cursor:pointer;margin-bottom:18px;transition:color .15s}
 .back-btn:hover{color:var(--gold)}
+
+/* Empty */
 .empty{text-align:center;padding:52px 20px}
 .empty-icon{font-size:42px;margin-bottom:12px;opacity:.4}
 .empty-text{font-size:13px;color:var(--text2)}
+
 @media(max-width:768px){
   .header{padding:0 14px}.header-stats{gap:14px}.hstat-val{font-size:14px}
   .main{padding:14px}.form-grid{grid-template-columns:1fr 1fr}
@@ -204,7 +253,7 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
 
 <main class="main">
 
-  <!-- ADD ITEM -->
+  <!-- ── ADD ITEM ── -->
   <div class="panel active" id="panel-add">
     <div class="card">
       <div class="card-header">
@@ -213,6 +262,8 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
       </div>
       <div id="alert-add" class="alert"></div>
       <div class="form-grid">
+
+        <!-- Basic Info -->
         <div class="form-section-label">📦 Basic Information</div>
         <div class="form-group half">
           <label class="form-label">Item Name *</label>
@@ -226,6 +277,8 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
           <label class="form-label">Barcode / EAN</label>
           <input class="form-input" id="f-barcode" type="text" placeholder="e.g. 8901234567890">
         </div>
+
+        <!-- Classification -->
         <div class="form-section-label">🏷 Classification</div>
         <div class="form-group half">
           <label class="form-label">Product Type</label>
@@ -251,6 +304,8 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
           <label class="form-label">Material</label>
           <input class="form-input" id="f-material" type="text" placeholder="e.g. Ceramic, Wood, Glass">
         </div>
+
+        <!-- Appearance -->
         <div class="form-section-label">🎨 Appearance</div>
         <div class="form-group half">
           <label class="form-label">Color</label>
@@ -267,6 +322,8 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
           <label class="form-label">Weight</label>
           <input class="form-input" id="f-weight" type="text" placeholder="e.g. 500g, 1.2 kg">
         </div>
+
+        <!-- Stock -->
         <div class="form-section-label">📊 Stock & Pricing</div>
         <div class="form-group half">
           <label class="form-label">Rack Location *</label>
@@ -288,6 +345,8 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
           <label class="form-label">Notes</label>
           <textarea class="form-input" id="f-notes" placeholder="Any extra information (fragile, handle with care, etc.)"></textarea>
         </div>
+
+        <!-- Image -->
         <div class="form-section-label">🖼 Product Image</div>
         <div class="form-group full">
           <div class="img-zone" id="add-zone"
@@ -306,7 +365,8 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
             <input class="form-input" id="f-img-url" type="url" placeholder="https://example.com/product.jpg" style="font-size:12px;padding:7px 11px" oninput="handleUrl(this.value,'add-preview','add-img')">
           </div>
         </div>
-      </div>
+
+      </div><!-- end form-grid -->
       <div class="form-actions">
         <button class="btn btn-gold" onclick="addItem()">Add Item</button>
         <button class="btn btn-ghost" onclick="clearForm()">Clear All</button>
@@ -314,7 +374,7 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
     </div>
   </div>
 
-  <!-- SEARCH -->
+  <!-- ── SEARCH ── -->
   <div class="panel" id="panel-search">
     <div class="search-row">
       <div class="search-wrap">
@@ -335,9 +395,16 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
         <table>
           <thead><tr>
             <th style="width:70px">Image</th>
-            <th>Item Name</th><th>SKU</th><th>Type</th><th>Category</th>
-            <th>Sub Class</th><th>Color</th><th>Rack</th><th>Qty</th>
-            <th>Price (₹)</th><th>Actions</th>
+            <th>Item Name</th>
+            <th>SKU</th>
+            <th>Type</th>
+            <th>Category</th>
+            <th>Sub Class</th>
+            <th>Color</th>
+            <th>Rack</th>
+            <th>Qty</th>
+            <th>Price (₹)</th>
+            <th>Actions</th>
           </tr></thead>
           <tbody id="search-body">
             <tr><td colspan="11"><div class="empty"><div class="empty-icon">⌕</div><div class="empty-text">Start typing to search</div></div></td></tr>
@@ -347,7 +414,7 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
     </div>
   </div>
 
-  <!-- RACK VIEW -->
+  <!-- ── RACK VIEW ── -->
   <div class="panel" id="panel-racks">
     <div id="rack-list-view">
       <div class="card">
@@ -369,8 +436,15 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
           <table>
             <thead><tr>
               <th style="width:70px">Image</th>
-              <th>Item Name</th><th>SKU</th><th>Type</th><th>Category</th>
-              <th>Sub Class</th><th>Color</th><th>Qty</th><th>Price (₹)</th><th>Actions</th>
+              <th>Item Name</th>
+              <th>SKU</th>
+              <th>Type</th>
+              <th>Category</th>
+              <th>Sub Class</th>
+              <th>Color</th>
+              <th>Qty</th>
+              <th>Price (₹)</th>
+              <th>Actions</th>
             </tr></thead>
             <tbody id="rack-detail-body"></tbody>
           </table>
@@ -379,7 +453,7 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
     </div>
   </div>
 
-  <!-- MANAGE -->
+  <!-- ── MANAGE ── -->
   <div class="panel" id="panel-manage">
     <div class="card">
       <div class="card-title">Add New Rack</div>
@@ -411,9 +485,17 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
         <table>
           <thead><tr>
             <th style="width:70px">Image</th>
-            <th>Item Name</th><th>SKU</th><th>Type</th><th>Category</th>
-            <th>Sub Class</th><th>Brand</th><th>Color</th><th>Rack</th>
-            <th>Qty</th><th>Price (₹)</th><th>Actions</th>
+            <th>Item Name</th>
+            <th>SKU</th>
+            <th>Type</th>
+            <th>Category</th>
+            <th>Sub Class</th>
+            <th>Brand</th>
+            <th>Color</th>
+            <th>Rack</th>
+            <th>Qty</th>
+            <th>Price (₹)</th>
+            <th>Actions</th>
           </tr></thead>
           <tbody id="manage-body"></tbody>
         </table>
@@ -421,7 +503,7 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
     </div>
   </div>
 
-  <!-- SETUP -->
+  <!-- ── SETUP ── -->
   <div class="panel" id="panel-setup">
     <div class="card">
       <div class="card-header">
@@ -444,7 +526,7 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
       <div class="steps">
         <div class="step"><div class="step-num">1</div><div><div class="step-title">Create Google Sheet</div><div class="step-desc">Go to <strong>sheets.google.com</strong>, create a new sheet named <code>Decor Warehouse</code>. Create two tabs: <code>Items</code> and <code>Racks</code>.</div></div></div>
         <div class="step"><div class="step-num">2</div><div><div class="step-title">Open Apps Script</div><div class="step-desc">In your sheet: <strong>Extensions → Apps Script</strong>. Paste the <code>Code.gs</code> file contents and save.</div></div></div>
-        <div class="step"><div class="step-num">3</div><div><div class="step-title">Run Setup Function</div><div class="step-desc">In Apps Script, select <code>setupSheets</code> from the function dropdown and click <strong>Run</strong>. This creates all headers automatically including the Movement Log sheet.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div><div class="step-title">Run Setup Function</div><div class="step-desc">In Apps Script, select <code>setupSheets</code> from the function dropdown and click <strong>Run</strong>. This creates all headers automatically.</div></div></div>
         <div class="step"><div class="step-num">4</div><div><div class="step-title">Deploy as Web App</div><div class="step-desc"><strong>Deploy → New Deployment → Web App</strong>. Execute as: <em>Me</em>. Access: <em>Anyone</em>. Copy the URL.</div></div></div>
         <div class="step"><div class="step-num">5</div><div><div class="step-title">Connect Here</div><div class="step-desc">Paste the URL above, click <strong>Test</strong> then <strong>Save & Connect</strong>. Done!</div></div></div>
       </div>
@@ -458,7 +540,7 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
     </div>
   </div>
 
-  <!-- MOVEMENT LOG -->
+  <!-- ── MOVEMENT LOG ── -->
   <div class="panel" id="panel-movements">
     <div class="card">
       <div class="card-header">
@@ -466,9 +548,9 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn btn-green btn-sm" onclick="exportMovLog()">⬇ Export Log CSV</button>
           <button class="btn btn-ghost btn-sm" onclick="pushMovLogToGS()">📊 Push to Google Sheets</button>
-          <button class="btn btn-red btn-sm" onclick="clearMovLog()">🗑 Clear Local Log</button>
         </div>
       </div>
+      <!-- Summary cards -->
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:18px">
         <div class="card" style="margin:0;padding:14px;text-align:center">
           <div style="font-family:var(--mono);font-size:28px;color:var(--purple)" id="ml-moves">0</div>
@@ -487,11 +569,11 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
           <div style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-top:4px">Total Events</div>
         </div>
       </div>
+      <!-- Filter -->
       <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
         <select class="form-input" id="ml-filter" style="width:180px" onchange="renderMovLog()">
           <option value="">All Types</option>
-          <option value="moved">Moved in Warehouse</option>
-          <option value="showroom">Moved to Showroom</option>
+          <option value="moved">Moved to Showroom</option>
           <option value="sold">Sold</option>
         </select>
         <input class="form-input" id="ml-search" type="text" placeholder="Search item name..." style="flex:1;min-width:180px" oninput="renderMovLog()">
@@ -499,9 +581,17 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
       <div class="table-wrap">
         <table>
           <thead><tr>
-            <th>Date & Time</th><th>Item Name</th><th>SKU</th><th>Type</th>
-            <th>Action</th><th>From</th><th>To</th><th>Qty</th>
-            <th>Sale Price (₹)</th><th>Moved By</th><th>Notes</th>
+            <th>Date & Time</th>
+            <th>Item Name</th>
+            <th>SKU</th>
+            <th>Type</th>
+            <th>Action</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Qty</th>
+            <th>Sale Price (₹)</th>
+            <th>Moved By</th>
+            <th>Notes</th>
           </tr></thead>
           <tbody id="mov-log-body"></tbody>
         </table>
@@ -511,7 +601,7 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
 
 </main>
 
-<!-- EDIT MODAL -->
+<!-- ── EDIT MODAL ── -->
 <div class="overlay" id="edit-overlay">
   <div class="modal">
     <div class="modal-title">Edit Item</div>
@@ -521,12 +611,14 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
       <div class="form-group half"><label class="form-label">Item Name *</label><input class="form-input" id="edit-name" type="text"></div>
       <div class="form-group half"><label class="form-label">SKU / Item Code</label><input class="form-input" id="edit-sku" type="text"></div>
       <div class="form-group half"><label class="form-label">Barcode / EAN</label><input class="form-input" id="edit-barcode" type="text"></div>
+
       <div class="form-section-label">🏷 Classification</div>
       <div class="form-group half"><label class="form-label">Product Type</label><input class="form-input" id="edit-type" type="text" list="type-list"></div>
       <div class="form-group half"><label class="form-label">Category</label><input class="form-input" id="edit-cat" type="text" list="cat-list"></div>
       <div class="form-group half"><label class="form-label">Sub Class</label><input class="form-input" id="edit-subclass" type="text" list="subclass-list"></div>
       <div class="form-group half"><label class="form-label">Brand / Supplier</label><input class="form-input" id="edit-brand" type="text" list="brand-list"></div>
       <div class="form-group half"><label class="form-label">Material</label><input class="form-input" id="edit-material" type="text"></div>
+
       <div class="form-section-label">🎨 Appearance</div>
       <div class="form-group half">
         <label class="form-label">Color</label>
@@ -537,12 +629,14 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
       </div>
       <div class="form-group half"><label class="form-label">Size / Dimensions</label><input class="form-input" id="edit-size" type="text"></div>
       <div class="form-group half"><label class="form-label">Weight</label><input class="form-input" id="edit-weight" type="text"></div>
+
       <div class="form-section-label">📊 Stock & Pricing</div>
       <div class="form-group half"><label class="form-label">Rack Location</label><select class="form-input" id="edit-rack"></select></div>
       <div class="form-group half"><label class="form-label">Quantity</label><input class="form-input" id="edit-qty" type="number" min="0"></div>
       <div class="form-group half"><label class="form-label">Purchase Price (₹)</label><input class="form-input" id="edit-cost" type="number" min="0"></div>
       <div class="form-group half"><label class="form-label">Selling Price (₹)</label><input class="form-input" id="edit-price" type="number" min="0"></div>
       <div class="form-group full"><label class="form-label">Notes</label><textarea class="form-input" id="edit-notes"></textarea></div>
+
       <div class="form-section-label">🖼 Product Image</div>
       <div class="form-group full">
         <div class="img-zone" id="edit-zone"
@@ -568,7 +662,7 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
   </div>
 </div>
 
-<!-- MOVE / SALE MODAL -->
+<!-- ── MOVE / SALE MODAL ── -->
 <div class="overlay" id="move-overlay">
   <div class="modal" style="max-width:500px">
     <div class="modal-title" id="move-modal-title">Move / Sell Item</div>
@@ -576,9 +670,10 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
       <label class="form-label">Item</label>
       <input class="form-input" id="move-display" readonly>
     </div>
+    <!-- Action type -->
     <div class="form-group" style="margin-bottom:14px">
       <label class="form-label">Action Type</label>
-      <div style="display:flex;gap:10px;margin-top:4px;flex-wrap:wrap">
+      <div style="display:flex;gap:10px;margin-top:4px">
         <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px">
           <input type="radio" name="move-action" value="warehouse" checked onchange="onActionChange()"> Move within Warehouse
         </label>
@@ -590,10 +685,12 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
         </label>
       </div>
     </div>
+    <!-- Rack select (hidden when sold) -->
     <div class="form-group" id="move-rack-grp" style="margin-bottom:14px">
       <label class="form-label">Select Destination Rack / Location</label>
       <select class="form-input" id="move-rack"></select>
     </div>
+    <!-- Showroom name (shown when showroom) -->
     <div class="form-group" id="move-showroom-grp" style="margin-bottom:14px;display:none">
       <label class="form-label">Showroom Name / Location</label>
       <input class="form-input" id="move-showroom-name" type="text" placeholder="e.g. Main Showroom, Delhi Showroom">
@@ -603,6 +700,7 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
         <label class="form-label">Quantity</label>
         <input class="form-input" id="move-qty" type="number" value="1" min="1">
       </div>
+      <!-- Sale price (shown when sold) -->
       <div class="form-group" id="move-price-grp" style="display:none">
         <label class="form-label">Sale Price (₹)</label>
         <input class="form-input" id="move-sale-price" type="number" value="0" min="0">
@@ -623,16 +721,14 @@ code{font-family:var(--mono);font-size:11px;background:var(--surf2);border:1px s
   </div>
 </div>
 
-<!-- LIGHTBOX -->
+<!-- ── LIGHTBOX ── -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lb-close" onclick="closeLightbox()">✕</button>
   <img id="lb-img" src="" alt="Product Image">
 </div>
 
 <script>
-/* ══════════════════════════════════════
-   STATE
-══════════════════════════════════════ */
+/* ── STATE ── */
 let items = [
   {id:'i1',name:'Ceramic Vase Blue',sku:'SKU-001',barcode:'8901000000001',type:'Home Decor',cat:'Vase',subclass:'Ceramic',brand:'ArtCraft',material:'Ceramic',color:'Blue',size:'30×15 cm',weight:'500g',rack:'Rack-A1',qty:5,cost:800,price:1200,notes:'Handle with care',image:'https://images.unsplash.com/photo-1578500494198-246f612d3b3d?w=200&q=80',added:'2025-01-10'},
   {id:'i2',name:'Wooden Photo Frame 8x10',sku:'SKU-002',barcode:'8901000000002',type:'Home Decor',cat:'Frame',subclass:'Wood',brand:'WoodWorks',material:'Teak Wood',color:'Brown',size:'25×20 cm',weight:'300g',rack:'Rack-A2',qty:12,cost:300,price:450,notes:'',image:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&q=80',added:'2025-01-11'},
@@ -648,41 +744,9 @@ let currentRack = null;
 let filteredItems = [...items];
 let gsUrl = localStorage.getItem('ws_gs_url') || '';
 
-/* ══════════════════════════════════════
-   MOVEMENT LOG — FIX: localStorage persistence
-══════════════════════════════════════ */
-let movementLog = [];
-
-function saveMovLog() {
-  try {
-    localStorage.setItem('ws_movements', JSON.stringify(movementLog));
-  } catch(e) {
-    console.warn('Could not save movement log to localStorage:', e);
-  }
-}
-
-function loadMovLog() {
-  try {
-    const saved = localStorage.getItem('ws_movements');
-    if (saved) movementLog = JSON.parse(saved);
-  } catch(e) {
-    movementLog = [];
-  }
-}
-
-function clearMovLog() {
-  if (!confirm('Local movement log clear karein? (Google Sheets ka data safe rahega)')) return;
-  movementLog = [];
-  saveMovLog();
-  renderMovLog();
-}
-
-/* ══════════════════════════════════════
-   INIT
-══════════════════════════════════════ */
+/* ── INIT ── */
 function init() {
-  loadMovLog(); // ← FIXED: pehle localStorage se load karo
-  if (gsUrl) fetchFromGS();
+  if(gsUrl) fetchFromGS();
   refreshAll();
 }
 
@@ -693,13 +757,11 @@ function refreshAll() {
   refreshFilters();
 }
 
-/* ══════════════════════════════════════
-   TABS
-══════════════════════════════════════ */
+/* ── TABS ── */
 function switchTab(tab) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  const tabs = ['add','search','racks','manage','movements','setup'];
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  const tabs=['add','search','racks','manage','movements','setup'];
   document.querySelectorAll('.tab')[tabs.indexOf(tab)].classList.add('active');
   document.getElementById('panel-'+tab).classList.add('active');
   if(tab==='racks')     renderRacks();
@@ -710,9 +772,7 @@ function switchTab(tab) {
   updateConnStatus();
 }
 
-/* ══════════════════════════════════════
-   STATS
-══════════════════════════════════════ */
+/* ── STATS ── */
 function updateStats() {
   document.getElementById('s-items').textContent = items.length;
   document.getElementById('s-racks').textContent = racks.length;
@@ -720,9 +780,7 @@ function updateStats() {
   document.getElementById('s-types').textContent = new Set(items.map(i=>i.type).filter(Boolean)).size;
 }
 
-/* ══════════════════════════════════════
-   DROPDOWNS
-══════════════════════════════════════ */
+/* ── DROPDOWNS ── */
 function refreshDropdowns() {
   const opts = racks.map(r=>`<option value="${r}">${r}</option>`).join('');
   ['f-rack','move-rack','edit-rack'].forEach(id => {
@@ -749,23 +807,19 @@ function setDataList(id, values) {
 
 function refreshFilters() {
   const makeopts = (arr, all) => `<option value="">${all}</option>` + arr.map(v=>`<option value="${v}">${v}</option>`).join('');
-  document.getElementById('fil-rack').innerHTML     = makeopts(racks,'All Racks');
-  document.getElementById('fil-type').innerHTML     = makeopts([...new Set(items.map(i=>i.type).filter(Boolean))].sort(),'All Types');
-  document.getElementById('fil-cat').innerHTML      = makeopts([...new Set(items.map(i=>i.cat).filter(Boolean))].sort(),'All Categories');
+  document.getElementById('fil-rack').innerHTML = makeopts(racks,'All Racks');
+  document.getElementById('fil-type').innerHTML = makeopts([...new Set(items.map(i=>i.type).filter(Boolean))].sort(),'All Types');
+  document.getElementById('fil-cat').innerHTML  = makeopts([...new Set(items.map(i=>i.cat).filter(Boolean))].sort(),'All Categories');
   document.getElementById('fil-subclass').innerHTML = makeopts([...new Set(items.map(i=>i.subclass).filter(Boolean))].sort(),'All Sub Classes');
 }
 
-/* ══════════════════════════════════════
-   COLOR PICKER
-══════════════════════════════════════ */
+/* ── COLOR PICKER ── */
 function syncColorPicker(val, pickerId='f-color-picker') {
   const hex = val.startsWith('#') && val.length===7 ? val : null;
   if(hex) { const el=document.getElementById(pickerId); if(el) el.value=hex; }
 }
 
-/* ══════════════════════════════════════
-   ADD ITEM
-══════════════════════════════════════ */
+/* ── ADD ITEM ── */
 function addItem() {
   const name = document.getElementById('f-name').value.trim();
   const rack = document.getElementById('f-rack').value;
@@ -802,9 +856,7 @@ function addItem() {
 
 function clearForm() {
   ['f-name','f-sku','f-barcode','f-type','f-cat','f-subclass','f-brand','f-material',
-   'f-color','f-size','f-weight','f-notes','f-img-url'].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.value='';
-  });
+   'f-color','f-size','f-weight','f-notes','f-img-url'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   document.getElementById('f-qty').value   = 1;
   document.getElementById('f-cost').value  = 0;
   document.getElementById('f-price').value = 0;
@@ -813,9 +865,7 @@ function clearForm() {
   prev.style.display='none'; prev.innerHTML='';
 }
 
-/* ══════════════════════════════════════
-   SEARCH
-══════════════════════════════════════ */
+/* ── SEARCH ── */
 function doSearch() {
   const q  = v('search-q').toLowerCase().trim();
   const fR = v('fil-rack'), fT = v('fil-type'), fC = v('fil-cat'), fS = v('fil-subclass');
@@ -829,12 +879,10 @@ function doSearch() {
   renderTable(filteredItems,'search-body',true);
 }
 
-/* ══════════════════════════════════════
-   RENDER TABLE
-══════════════════════════════════════ */
+/* ── RENDER TABLE ── */
 function imgCell(item) {
   return item.image
-    ? `<img class="img-thumb" src="${item.image}" alt="${esc(item.name)}" onclick="openLightbox('${item.image.replace(/'/g,"\\'")}')" onerror="this.outerHTML='<div class=img-placeholder>+</div>'">`
+    ? `<img class="img-thumb" src="${item.image}" alt="${esc(item.name)}" onclick="openLightbox('${item.image.replace(/'/g,"\\'")}')" onerror="this.outerHTML='<div class=img-placeholder onclick=openEdit(\'${item.id}\')>+</div>'">`
     : `<div class="img-placeholder" onclick="openEdit('${item.id}')" title="Click Edit to add image">+</div>`;
 }
 
@@ -881,15 +929,10 @@ function renderTable(data, tbodyId, showRack=false) {
     </tr>`).join('');
 }
 
-/* ══════════════════════════════════════
-   RACKS
-══════════════════════════════════════ */
+/* ── RACKS ── */
 function renderRacks() {
   const grid = document.getElementById('rack-grid');
-  if(!racks.length) {
-    grid.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🗄</div><div class="empty-text">No racks yet — add them in Manage tab</div></div>`;
-    return;
-  }
+  if(!racks.length) { grid.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🗄</div><div class="empty-text">No racks yet — add them in Manage tab</div></div>`; return; }
   grid.innerHTML = racks.map(rack=>{
     const rI = items.filter(i=>i.rack===rack);
     const prev = rI.slice(0,3).map(i=>`<div class="rack-tag-item">${esc(i.name)}</div>`).join('');
@@ -920,9 +963,7 @@ function closeRackDetail() {
   renderRacks();
 }
 
-/* ══════════════════════════════════════
-   MANAGE
-══════════════════════════════════════ */
+/* ── MANAGE ── */
 function renderManage() {
   const tagsEl = document.getElementById('rack-tags');
   tagsEl.innerHTML = racks.length
@@ -930,10 +971,7 @@ function renderManage() {
     : `<span style="color:var(--text2);font-size:13px">No racks yet</span>`;
 
   const tbody = document.getElementById('manage-body');
-  if(!items.length) {
-    tbody.innerHTML=`<tr><td colspan="12"><div class="empty"><div class="empty-icon">📦</div><div class="empty-text">No items yet</div></div></td></tr>`;
-    return;
-  }
+  if(!items.length) { tbody.innerHTML=`<tr><td colspan="12"><div class="empty"><div class="empty-icon">📦</div><div class="empty-text">No items yet</div></div></td></tr>`; return; }
   tbody.innerHTML = items.map(item=>`
     <tr>
       <td>${imgCell(item)}</td>
@@ -966,26 +1004,22 @@ function addRack() {
   document.getElementById('new-rack-name').value='';
   showAlert(al,`✓ Rack "${name}" added.`,'success');
   refreshAll();
-  if(gsUrl) pushToGS('addRack',{name});
+  if(gsUrl) pushToGS('addRack', {name});
 }
 
 function deleteRack(rack) {
   if(items.some(i=>i.rack===rack)){alert(`Cannot delete "${rack}" — it contains items. Move them first.`);return;}
   if(!confirm(`Delete rack "${rack}"?`)) return;
-  racks=racks.filter(r=>r!==rack);
-  refreshAll();
+  racks=racks.filter(r=>r!==rack); refreshAll();
 }
 
 function deleteItem(id) {
   if(!confirm('Delete this item permanently?')) return;
-  items=items.filter(i=>i.id!==id);
-  refreshAll();
-  if(gsUrl) pushToGS('deleteItem',{id});
+  items=items.filter(i=>i.id!==id); refreshAll();
+  if(gsUrl) pushToGS('deleteItem', {id});
 }
 
-/* ══════════════════════════════════════
-   MOVE / SELL — FIXED
-══════════════════════════════════════ */
+/* ── MOVE / SELL ── */
 function openMove(id) {
   moveTarget=id;
   const item=items.find(i=>i.id===id);
@@ -1002,7 +1036,7 @@ function openMove(id) {
   openModal('move-overlay');
 }
 
-function onActionChange() {
+function onActionChange(){
   const action=document.querySelector('input[name="move-action"]:checked').value;
   const rGrp=document.getElementById('move-rack-grp');
   const sGrp=document.getElementById('move-showroom-grp');
@@ -1023,15 +1057,17 @@ function onActionChange() {
 function confirmMove() {
   const action  = document.querySelector('input[name="move-action"]:checked').value;
   const movedBy = v('move-by').trim();
-  const qty     = parseInt(v('move-qty'))||1;
+  const qtyRaw  = parseInt(document.getElementById('move-qty').value, 10);
+  const qty     = isNaN(qtyRaw) || qtyRaw < 1 ? 1 : qtyRaw;
   const notes   = v('move-notes').trim();
 
   if(!movedBy){ alert('Please enter who is moving/selling this item.'); return; }
   const item = items.find(i=>i.id===moveTarget);
   if(!item) return;
 
+  // Validate qty
   if(qty > item.qty){
-    alert(`Only ${item.qty} unit(s) available. Cannot move ${qty}.`);
+    alert('Only ' + item.qty + ' unit(s) available. You entered ' + qty + '.');
     return;
   }
 
@@ -1043,7 +1079,6 @@ function confirmMove() {
     hour:'2-digit',minute:'2-digit',hour12:false
   });
 
-  // ── FIXED: action field sahi set ho raha hai ──
   const logEntry = {
     id:        'ml'+Date.now(),
     datetime:  dateStr,
@@ -1051,53 +1086,62 @@ function confirmMove() {
     itemName:  item.name,
     sku:       item.sku||'',
     type:      item.type||'',
-    action:    action,   // 'warehouse' | 'showroom' | 'sold'
+    action,
     from:      item.rack,
     to:        '',
-    qty:       qty,
+    qty,
     salePrice: 0,
-    movedBy:   movedBy,
-    notes:     notes,
+    movedBy,
+    notes,
     addedOn:   now.toISOString().slice(0,10)
   };
 
-  if(action === 'sold') {
-    logEntry.to        = 'SOLD';
-    logEntry.salePrice = parseFloat(v('move-sale-price'))||0;
-    item.qty           = Math.max(0, item.qty - qty);
-    if(item.qty === 0) item.rack = '[Sold Out]';
+  const originalRack = item.rack;
 
-  } else if(action === 'showroom') {
-    const sname = v('move-showroom-name').trim() || 'Showroom';
-    logEntry.to = sname;
-    item.qty    = Math.max(0, item.qty - qty);
+  if(action === 'sold'){
+    // ── SOLD: reduce qty, if 0 mark sold out ──
+    logEntry.to        = 'SOLD';
+    logEntry.salePrice = parseFloat(document.getElementById('move-sale-price').value)||0;
+    item.qty           = item.qty - qty;
+    if(item.qty <= 0){
+      item.qty  = 0;
+      item.rack = '[Sold Out]';
+    }
+
+  } else if(action === 'showroom'){
+    // ── SHOWROOM: reduce qty from warehouse ──
+    const sname    = v('move-showroom-name').trim() || 'Showroom';
+    logEntry.to    = sname;
+    const prevQty  = item.qty;
+    item.qty       = prevQty - qty;   // reduce by moved qty
+
     if(!racks.includes(sname)) racks.push(sname);
-    if(item.qty === 0) item.rack = sname;
+
+    if(item.qty <= 0){
+      item.qty  = 0;
+      item.rack = sname;   // all stock gone to showroom
+    }
+    // if partial: item stays in original rack with reduced qty
 
   } else {
-    // warehouse move
-    const newRack = v('move-rack');
-    logEntry.to   = newRack;
-    item.rack     = newRack;
+    // ── WAREHOUSE MOVE: just change rack, qty unchanged ──
+    const newRack  = v('move-rack');
+    logEntry.to    = newRack;
+    item.rack      = newRack;
   }
 
-  // ── FIXED: log add karo aur localStorage mein save karo ──
   movementLog.unshift(logEntry);
-  saveMovLog(); // ← YEH NAHI THA PEHLE — yahi bug tha!
-
   closeModal('move-overlay');
   refreshAll();
 
-  // Google Sheets pe push karo
-  if(gsUrl) {
-    pushToGS('updateItem', item);
-    pushToGS('addMovement', logEntry);
+  // Push to Google Sheets via GET (CORS-safe)
+  if(gsUrl){
+    pushToGS('updateItem',   item);
+    pushToGS('addMovement',  logEntry);
   }
 }
 
-/* ══════════════════════════════════════
-   EDIT
-══════════════════════════════════════ */
+/* ── EDIT ── */
 function openEdit(id) {
   const item=items.find(i=>i.id===id); if(!item) return;
   document.getElementById('edit-id').value       = id;
@@ -1118,7 +1162,9 @@ function openEdit(id) {
   document.getElementById('edit-notes').value    = item.notes||'';
   document.getElementById('edit-img').value      = item.image||'';
   document.getElementById('edit-img-url').value  = '';
+  // Color picker
   if(item.color && item.color.startsWith('#')) document.getElementById('edit-color-picker').value=item.color;
+  // Image preview
   const prev=document.getElementById('edit-preview');
   if(item.image) { prev.style.display='block'; prev.innerHTML=buildPreview(item.image,item.name); }
   else { prev.style.display='none'; prev.innerHTML=''; }
@@ -1148,14 +1194,11 @@ function confirmEdit() {
   item.notes    = document.getElementById('edit-notes').value.trim();
   const newImg  = document.getElementById('edit-img').value;
   if(newImg) item.image = newImg;
-  closeModal('edit-overlay');
-  refreshAll();
-  if(gsUrl) pushToGS('updateItem',item);
+  closeModal('edit-overlay'); refreshAll();
+  if(gsUrl) pushToGS('updateItem', item);
 }
 
-/* ══════════════════════════════════════
-   IMAGE HANDLING
-══════════════════════════════════════ */
+/* ── IMAGE HANDLING ── */
 function handleFile(input, zoneId, previewId, dataId) {
   const file=input.files[0]; if(!file) return;
   if(file.size > 2*1024*1024){alert('Image too large. Please use an image under 2 MB.');return;}
@@ -1196,22 +1239,19 @@ function buildPreview(src, name) {
 }
 
 function clearPreview(btn) {
-  const prev=btn.closest('[id$="-preview"]'); if(!prev) return;
+  const prev=btn.closest('[id$="-preview"]');
+  if(!prev) return;
   prev.style.display='none'; prev.innerHTML='';
   const dataId=prev.id.replace('-preview','-img');
   const el=document.getElementById(dataId); if(el) el.value='';
 }
 
-/* ══════════════════════════════════════
-   LIGHTBOX
-══════════════════════════════════════ */
+/* ── LIGHTBOX ── */
 function openLightbox(src) { document.getElementById('lb-img').src=src; document.getElementById('lightbox').classList.add('open'); }
 function closeLightbox()   { document.getElementById('lightbox').classList.remove('open'); }
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
 
-/* ══════════════════════════════════════
-   CSV
-══════════════════════════════════════ */
+/* ── CSV ── */
 const CSV_HEADERS = ['ID','Name','SKU','Barcode','Product Type','Category','Sub Class','Brand','Material','Color','Size','Weight','Rack','Qty','Cost','Price','Notes','Image URL','Added On'];
 function toCSV(data) {
   const rows = data.map(i=>[i.id,q(i.name),q(i.sku),q(i.barcode),q(i.type),q(i.cat),q(i.subclass),q(i.brand),q(i.material),q(i.color),q(i.size),q(i.weight),q(i.rack),i.qty,i.cost,i.price,q(i.notes),q(i.image&&i.image.startsWith('http')?i.image:''),q(i.added)]);
@@ -1255,9 +1295,7 @@ function parseCSVLine(line) {
   res.push(cur.trim()); return res;
 }
 
-/* ══════════════════════════════════════
-   GOOGLE SHEETS
-══════════════════════════════════════ */
+/* ── GOOGLE SHEETS ── */
 function updateConnStatus() {
   const on=!!gsUrl;
   ['conn-status','conn-status2'].forEach(id=>{
@@ -1267,70 +1305,29 @@ function updateConnStatus() {
   });
   if(gsUrl&&document.getElementById('gs-url')) document.getElementById('gs-url').value=gsUrl;
 }
-
-function saveConn() {
-  const url=v('gs-url').trim();
-  const al=document.getElementById('alert-setup');
-  if(!url){showAlert(al,'Enter the Web App URL.','error');return;}
-  gsUrl=url;
-  localStorage.setItem('ws_gs_url',gsUrl);
-  updateConnStatus();
-  fetchFromGS();
-}
-
-function clearConn() {
-  gsUrl='';
-  localStorage.removeItem('ws_gs_url');
-  document.getElementById('gs-url').value='';
-  updateConnStatus();
-}
-
-function testConn() {
-  const url=v('gs-url').trim();
-  const al=document.getElementById('alert-setup');
-  if(!url){showAlert(al,'Enter the URL first.','error');return;}
-  showAlert(al,'Testing...','info');
-  fetch(`${url}?action=ping`)
-    .then(r=>r.json())
-    .then(d=>showAlert(al,d.status==='ok'?'✓ Connection successful!':'Unexpected response.','success'))
-    .catch(()=>showAlert(al,'Connection failed. Check URL and deployment.','error'));
-}
-
-function fetchFromGS() {
+function saveConn(){const url=v('gs-url').trim();const al=document.getElementById('alert-setup');if(!url){showAlert(al,'Enter the Web App URL.','error');return;}gsUrl=url;localStorage.setItem('ws_gs_url',gsUrl);updateConnStatus();fetchFromGS();}
+function clearConn(){gsUrl='';localStorage.removeItem('ws_gs_url');document.getElementById('gs-url').value='';updateConnStatus();}
+function testConn(){const url=v('gs-url').trim();const al=document.getElementById('alert-setup');if(!url){showAlert(al,'Enter the URL first.','error');return;}showAlert(al,'Testing...','info');fetch(`${url}?action=ping`).then(r=>r.json()).then(d=>showAlert(al,d.status==='ok'?'✓ Connection successful!':'Unexpected response.','success')).catch(()=>showAlert(al,'Connection failed. Check URL and deployment.','error'));}
+function fetchFromGS(){if(!gsUrl)return;showLoading(true);fetch(`${gsUrl}?action=getAll`).then(r=>r.json()).then(d=>{if(d.items)items=d.items;if(d.racks)racks=d.racks;if(d.movements)movementLog=d.movements;refreshAll();showLoading(false);}).catch(()=>showLoading(false));}
+function pushToGS(type, data){
   if(!gsUrl) return;
-  showLoading(true);
-  fetch(`${gsUrl}?action=getAll`)
-    .then(r=>r.json())
-    .then(d=>{
-      if(d.items)     items=d.items;
-      if(d.racks)     racks=d.racks;
-      // ── FIXED: GS se movements aayein toh merge karo local ke saath ──
-      if(d.movements && d.movements.length > 0) {
-        // GS data ko priority do, local unique entries bhi rakhho
-        const gsIds = new Set(d.movements.map(m=>m.id));
-        const localOnly = movementLog.filter(m=>!gsIds.has(m.id));
-        movementLog = [...d.movements, ...localOnly];
-        saveMovLog();
-      }
-      refreshAll();
-      showLoading(false);
-    })
-    .catch(()=>showLoading(false));
+  try {
+    // GET request — only way that works from browser to GAS without CORS errors
+    const payload = encodeURIComponent(JSON.stringify(data));
+    const url     = `${gsUrl}?action=push&type=${type}&payload=${payload}`;
+    fetch(url)
+      .then(r => r.json())
+      .then(d => {
+        if(d.status !== 'ok') console.warn('GS warn ['+type+']:', d.message);
+        else console.log('GS ok ['+type+']');
+      })
+      .catch(err => console.warn('GS error ['+type+']:', err));
+  } catch(err) {
+    console.warn('pushToGS failed:', err);
+  }
 }
 
-function pushToGS(action, data) {
-  if(!gsUrl) return;
-  fetch(gsUrl, {
-    method: 'POST',
-    mode:   'no-cors',
-    headers: {'Content-Type':'text/plain'},
-    body:    JSON.stringify({action, ...data})
-  }).catch(err=>console.warn('GS push failed:',err));
-}
-
-/* ══════════════════════════════════════
-   HELPERS
-══════════════════════════════════════ */
+/* ── HELPERS ── */
 function v(id){return document.getElementById(id)?.value||'';}
 function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
 function openModal(id){document.getElementById(id).classList.add('open');}
@@ -1339,9 +1336,7 @@ function showLoading(b){document.getElementById('loading').classList.toggle('sho
 function showAlert(el,msg,type){el.textContent=msg;el.className=`alert show alert-${type}`;clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),4000);}
 document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
 
-/* ══════════════════════════════════════
-   THEME
-══════════════════════════════════════ */
+/* ── THEME ── */
 function toggleTheme(){
   const light=document.body.classList.toggle('light');
   localStorage.setItem('ws_theme', light?'light':'dark');
@@ -1352,39 +1347,30 @@ function initTheme(){
   if(t==='light'){document.body.classList.add('light');document.getElementById('theme-btn').innerHTML='☀️ Light';}
 }
 
-/* ══════════════════════════════════════
-   MOVEMENT LOG RENDER
-══════════════════════════════════════ */
-function renderMovLog() {
+/* ── MOVEMENT LOG ── */
+let movementLog = [];
+
+function renderMovLog(){
   const fType=v('ml-filter');
   const fQ=v('ml-search').toLowerCase().trim();
   let filtered=movementLog.filter(e=>{
     const mT=!fType||e.action===fType;
-    const mQ=!fQ||e.itemName.toLowerCase().includes(fQ)||(e.sku||'').toLowerCase().includes(fQ);
+    const mQ=!fQ||e.itemName.toLowerCase().includes(fQ)||e.sku.toLowerCase().includes(fQ);
     return mT&&mQ;
   });
-
-  // Summary counts
-  const moves   = movementLog.filter(e=>e.action==='showroom').length;
-  const sales   = movementLog.filter(e=>e.action==='sold').length;
-  const rev     = movementLog.filter(e=>e.action==='sold').reduce((s,e)=>s+(e.salePrice||0),0);
-  document.getElementById('ml-moves').textContent   = moves;
-  document.getElementById('ml-sales').textContent   = sales;
-  document.getElementById('ml-revenue').textContent = '₹'+rev.toLocaleString('en-IN');
-  document.getElementById('ml-total').textContent   = movementLog.length;
+  // Summary
+  const moves  = movementLog.filter(e=>e.action==='showroom').length;
+  const sales  = movementLog.filter(e=>e.action==='sold').length;
+  const rev    = movementLog.filter(e=>e.action==='sold').reduce((s,e)=>s+e.salePrice,0);
+  document.getElementById('ml-moves').textContent  = moves;
+  document.getElementById('ml-sales').textContent  = sales;
+  document.getElementById('ml-revenue').textContent= '₹'+rev.toLocaleString('en-IN');
+  document.getElementById('ml-total').textContent  = movementLog.length;
 
   const tbody=document.getElementById('mov-log-body');
-  if(!filtered.length){
-    tbody.innerHTML=`<tr><td colspan="11"><div class="empty"><div class="empty-icon">📋</div><div class="empty-text">No movements recorded yet</div></div></td></tr>`;
-    return;
-  }
-
+  if(!filtered.length){tbody.innerHTML=`<tr><td colspan="11"><div class="empty"><div class="empty-icon">📋</div><div class="empty-text">No movements recorded yet</div></div></td></tr>`;return;}
   tbody.innerHTML=filtered.map(e=>{
-    let actionBadge;
-    if(e.action==='sold')        actionBadge=`<span class="badge badge-sold">Sold</span>`;
-    else if(e.action==='showroom') actionBadge=`<span class="badge badge-showroom">→ Showroom</span>`;
-    else                          actionBadge=`<span class="badge badge-rack">Moved</span>`;
-
+    const actionBadge=e.action==='sold'?`<span class="badge badge-sold">Sold</span>`:e.action==='showroom'?`<span class="badge badge-showroom">→ Showroom</span>`:`<span class="badge badge-rack">Moved</span>`;
     return `<tr class="${e.action==='sold'?'log-row-sale':e.action==='showroom'?'log-row-move':''}">
       <td><span class="cell-mono" style="font-size:11px">${esc(e.datetime)}</span></td>
       <td><div class="item-name" style="font-size:13px">${esc(e.itemName)}</div></td>
@@ -1392,7 +1378,7 @@ function renderMovLog() {
       <td>${e.type?`<span class="badge badge-type">${esc(e.type)}</span>`:'—'}</td>
       <td>${actionBadge}</td>
       <td><span class="badge badge-rack">${esc(e.from)}</span></td>
-      <td><span class="badge ${e.action==='sold'?'badge-sold':e.action==='showroom'?'badge-showroom':'badge-rack'}">${esc(e.to)||'—'}</span></td>
+      <td><span class="badge ${e.action==='sold'?'badge-sold':e.action==='showroom'?'badge-showroom':'badge-rack'}">${esc(e.to)}</span></td>
       <td><span class="badge badge-qty">${e.qty}</span></td>
       <td><span class="cell-mono">${e.salePrice?'₹'+e.salePrice.toLocaleString('en-IN'):'—'}</span></td>
       <td><strong>${esc(e.movedBy)}</strong></td>
@@ -1401,22 +1387,19 @@ function renderMovLog() {
   }).join('');
 }
 
-function exportMovLog() {
+function exportMovLog(){
   const hdrs=['Date Time','Item Name','SKU','Product Type','Action','From','To','Qty','Sale Price','Moved By','Notes'];
   const rows=movementLog.map(e=>[q(e.datetime),q(e.itemName),q(e.sku),q(e.type),q(e.action),q(e.from),q(e.to),e.qty,e.salePrice,q(e.movedBy),q(e.notes)]);
   dlCSV([hdrs.join(','),...rows.map(r=>r.join(','))].join('\n'),`movement_log_${today()}.csv`);
 }
 
-function pushMovLogToGS() {
+function pushMovLogToGS(){
   if(!gsUrl){alert('Connect Google Sheets first in the Setup tab.');return;}
-  let pushed=0;
-  movementLog.forEach(e=>{pushToGS('addMovement',e);pushed++;});
-  alert(`${pushed} movement entries Google Sheets pe push kar diye!`);
+  movementLog.forEach(e=>pushToGS('addMovement',e));
+  alert('Movement log pushed to Google Sheets!');
 }
 
-/* ══════════════════════════════════════
-   BOOT
-══════════════════════════════════════ */
+/* ── BOOT ── */
 initTheme();
 init();
 </script>
