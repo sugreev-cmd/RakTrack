@@ -1265,34 +1265,137 @@ function exportRackCSV()   { if(currentRack) dlCSV(toCSV(items.filter(i=>i.rack=
 function today()           { return new Date().toISOString().slice(0,10); }
 
 function importCSV(event) {
-  const file=event.target.files[0]; if(!file) return;
-  const reader=new FileReader();
-  reader.onload=function(e){
-    const lines=e.target.result.split('\n').filter(l=>l.trim());
-    if(lines.length<2){alert('CSV has no data rows.');return;}
-    const imported=[];
-    for(let i=1;i<lines.length;i++){
-      const c=parseCSVLine(lines[i]); if(!c[1]) continue;
-      const rack=c[12]||racks[0]||'Rack-A1';
-      if(!racks.includes(rack)) racks.push(rack);
-      imported.push({id:c[0]||'i'+(nextId++),name:c[1]||'',sku:c[2]||'',barcode:c[3]||'',type:c[4]||'',cat:c[5]||'',subclass:c[6]||'',brand:c[7]||'',material:c[8]||'',color:c[9]||'',size:c[10]||'',weight:c[11]||'',rack,qty:parseInt(c[13])||0,cost:parseFloat(c[14])||0,price:parseFloat(c[15])||0,notes:c[16]||'',image:c[17]||'',added:c[18]||today()});
+  const file = event.target.files[0];
+  if(!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    let raw = e.target.result;
+
+    // Remove BOM (Excel UTF-8 adds this at start)
+    raw = raw.replace(/^\uFEFF/, '');
+
+    // Normalize line endings — Excel uses \r\n, Mac uses \r
+    raw = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+    const lines = raw.split('\n').filter(l => l.trim() !== '');
+    if(lines.length < 2){
+      alert('CSV file mein data nahi hai (sirf header hai ya file empty hai).');
+      return;
     }
-    const replace=confirm(`Found ${imported.length} items.\n\nOK = Replace existing data\nCancel = Add to existing data`);
-    if(replace){items=imported;}else{items=[...items,...imported];}
-    nextId=Math.max(...items.map(i=>parseInt(i.id.replace(/\D/g,''))||0))+1;
-    refreshAll(); alert(`✓ ${imported.length} items imported.`);
+
+    // Read headers from row 1 so we can match columns by name
+    const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase().trim());
+
+    // Helper: find column index by possible header names
+    function col(names){
+      for(let n of names){
+        const idx = headers.indexOf(n);
+        if(idx !== -1) return idx;
+      }
+      return -1;
+    }
+
+    // Map header names to column indices (matches our export format)
+    const iId       = col(['id']);
+    const iName     = col(['name','item name','product name']);
+    const iSku      = col(['sku','item code','sku / item code']);
+    const iBarcode  = col(['barcode','ean','barcode / ean']);
+    const iType     = col(['product type','type']);
+    const iCat      = col(['category','cat']);
+    const iSubclass = col(['sub class','subclass','sub-class']);
+    const iBrand    = col(['brand','supplier','brand / supplier']);
+    const iMaterial = col(['material']);
+    const iColor    = col(['color','colour']);
+    const iSize     = col(['size','dimensions','size / dimensions']);
+    const iWeight   = col(['weight']);
+    const iRack     = col(['rack','rack location','location']);
+    const iQty      = col(['qty','quantity']);
+    const iCost     = col(['cost','cost price','purchase price (₹)','purchase price']);
+    const iPrice    = col(['price','selling price','selling price (₹)']);
+    const iNotes    = col(['notes']);
+    const iImage    = col(['image url','image','image_url']);
+    const iAdded    = col(['added on','added','date']);
+
+    if(iName === -1){
+      alert('CSV mein "Name" column nahi mila.\nPehle app se Export CSV karo, phir wahi file import karo.');
+      return;
+    }
+
+    const imported = [];
+    for(let i = 1; i < lines.length; i++){
+      const c = parseCSVLine(lines[i]);
+      const name = iName >= 0 ? (c[iName]||'').trim() : '';
+      if(!name) continue; // skip empty rows
+
+      const rack = (iRack >= 0 ? c[iRack] : '') || racks[0] || 'Rack-A1';
+      const rackClean = rack.trim();
+      if(rackClean && !racks.includes(rackClean)) racks.push(rackClean);
+
+      imported.push({
+        id:       (iId >= 0 ? c[iId] : '')||('i'+(nextId++)),
+        name,
+        sku:      iSku      >= 0 ? (c[iSku]     ||'') : '',
+        barcode:  iBarcode  >= 0 ? (c[iBarcode] ||'') : '',
+        type:     iType     >= 0 ? (c[iType]    ||'') : '',
+        cat:      iCat      >= 0 ? (c[iCat]     ||'') : '',
+        subclass: iSubclass >= 0 ? (c[iSubclass]||'') : '',
+        brand:    iBrand    >= 0 ? (c[iBrand]   ||'') : '',
+        material: iMaterial >= 0 ? (c[iMaterial]||'') : '',
+        color:    iColor    >= 0 ? (c[iColor]   ||'') : '',
+        size:     iSize     >= 0 ? (c[iSize]    ||'') : '',
+        weight:   iWeight   >= 0 ? (c[iWeight]  ||'') : '',
+        rack:     rackClean || racks[0] || 'Rack-A1',
+        qty:      iQty   >= 0 ? (parseInt(c[iQty])   || 0) : 0,
+        cost:     iCost  >= 0 ? (parseFloat(c[iCost]) || 0) : 0,
+        price:    iPrice >= 0 ? (parseFloat(c[iPrice])|| 0) : 0,
+        notes:    iNotes >= 0 ? (c[iNotes]||'') : '',
+        image:    iImage >= 0 ? (c[iImage]||'') : '',
+        added:    iAdded >= 0 ? (c[iAdded]||today()) : today()
+      });
+    }
+
+    if(imported.length === 0){
+      alert('Koi item nahi mila CSV mein.\n\nCheck karo:\n1. Name column hai?\n2. File empty toh nahi?');
+      return;
+    }
+
+    const replace = confirm(
+      imported.length + ' items mile CSV mein.\n\n' +
+      'OK     = Existing data replace karo\n' +
+      'Cancel = Existing data mein add karo'
+    );
+    if(replace){ items = imported; }
+    else       { items = [...items, ...imported]; }
+
+    nextId = Math.max(...items.map(i => parseInt(i.id.replace(/\D/g,''))||0)) + 1;
+    refreshAll();
+    alert('✓ ' + imported.length + ' items import ho gaye!');
   };
-  reader.readAsText(file,'UTF-8'); event.target.value='';
+
+  reader.readAsText(file, 'UTF-8');
+  event.target.value = '';
 }
 
 function parseCSVLine(line) {
-  const res=[]; let cur='',inQ=false;
-  for(let i=0;i<line.length;i++){
-    if(line[i]==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else inQ=!inQ;}
-    else if(line[i]===','&&!inQ){res.push(cur.trim());cur='';}
-    else cur+=line[i];
+  // Remove trailing \r if present (Excel Windows line endings)
+  line = line.replace(/\r$/, '');
+  const res = [];
+  let cur = '', inQ = false;
+  for(let i = 0; i < line.length; i++){
+    const ch = line[i];
+    if(ch === '"'){
+      if(inQ && line[i+1] === '"'){ cur += '"'; i++; }
+      else inQ = !inQ;
+    } else if(ch === ',' && !inQ){
+      res.push(cur.trim());
+      cur = '';
+    } else {
+      cur += ch;
+    }
   }
-  res.push(cur.trim()); return res;
+  res.push(cur.trim());
+  return res;
 }
 
 /* ── GOOGLE SHEETS ── */
